@@ -92,6 +92,9 @@ The [Dockerfile](docker/Dockerfile)
 docker build -t rezarahim/alpine-tools:1.1 .
 docker push  rezarahim/alpine-tools:1.1
 ```
+---
+
+[Redis Enterprise for Kubernetes documentation](https://github.com/RedisLabs/redis-enterprise-k8s-docs)
 
 ---
 ### Sepup the South Cluster
