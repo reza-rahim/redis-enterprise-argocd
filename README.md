@@ -174,7 +174,7 @@ syncOptions:
 
 - CreateNamespace=true: If the prod namespace doesn’t exist, ArgoCD will create it for you.
 
-Let's look into ArgoCD Application [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-pord-operator-argo.yaml) for prod env.
+**Let's look into ArgoCD Application [south-prod-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-prod-operator-argo.yaml) for prod env.**
 
 Main Differencein the helm.valueFiles section:
 ```
