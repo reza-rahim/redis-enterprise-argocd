@@ -8,7 +8,7 @@ This guide outlines a GitOps-style, fully automated deployment of **two Redis En
 
 Before enabling GitOps automation, you need to perform the following **manual setup steps**. These are **one-time operations** that prepare your environment for a fully automated RE deployment.
 
----
+
 
 ### 1. Create a Shared S3-Compatible Bucket
 
@@ -66,5 +66,6 @@ kubectl create secret generic rsa-keys -n <namespace> \
   --from-file=private_key.pem \
   --from-file=public_key.pem
 ```
+---
 
 
