@@ -113,3 +113,31 @@ kind: Application
 
 - This is how you tell ArgoCD what to deploy and where.
 
+```
+metadata:
+  name: south-dev-operator-argo
+  namespace: argocd
+```
+- name: This is the name of your ArgoCD Application.
+
+- namespace: This is the namespace where ArgoCD itself is installed, not where your app is deployed. ArgoCD watches its own namespace (argocd).
+
+```
+  source:
+    repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/
+    targetRevision: main
+    path: south/operator-chart
+    helm:
+      valueFiles:
+      - dev-values.yaml
+```
+This tells ArgoCD where to pull your deployment config from:
+
+- repoURL: GitHub repo that contains your app’s Helm chart or Kubernetes YAML.
+
+- targetRevision: Git branch to track — here it’s main.
+
+- path: Folder in the repo that contains the Helm chart.
+
+- helm.valueFiles: You’re using Helm, and passing dev-values.yaml — likely contains environment-specific settings (like image versions, replicas, resource limits, etc.).
+
