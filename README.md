@@ -113,6 +113,7 @@ kind: Application
 
 - This is how you tell ArgoCD what to deploy and where.
 
+
 ```
 metadata:
   name: south-dev-operator-argo
@@ -122,6 +123,7 @@ metadata:
 
 - namespace: This is the namespace where ArgoCD itself is installed, not where your app is deployed. ArgoCD watches its own namespace (argocd).
 
+#### Source — Where to get the manifests
 ```
   source:
     repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/
@@ -140,4 +142,35 @@ This tells ArgoCD where to pull your deployment config from:
 - path: Folder in the repo that contains the Helm chart.
 
 - helm.valueFiles: You’re using Helm, and passing dev-values.yaml — likely contains environment-specific settings (like image versions, replicas, resource limits, etc.).
+
+#### Destination — Where to deploy
+```
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+```
+- server: Tells ArgoCD to deploy to the Kubernetes cluster it's running in.
+
+- namespace: The app will be deployed into the prod namespace in the cluster.
+
+#### Sync Policy — How it stays in sync
+```
+  syncPolicy: 
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+```
+This controls how ArgoCD keeps the app in sync with Git:
+
+- automated: Enables automatic syncing (no need to click “Sync” manually).
+
+- prune: true: Deletes resources from the cluster if they're no longer in Git.
+
+- selfHeal: true: Automatically fixes any drift if something changes in the cluster.
+
+syncOptions:
+
+- CreateNamespace=true: If the prod namespace doesn’t exist, ArgoCD will create it for you.
 
