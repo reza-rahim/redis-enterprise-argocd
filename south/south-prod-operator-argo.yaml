@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default              # ArgoCD project (default unless specified)
   source:
-    repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/tree/main/south/operator-chart  # Replace with your Git repository
+    repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/  # Replace with your Git repository
     targetRevision: main         # Branch, tag, or commit SHA to deploy
-    path: north/operator-chart  # Path to the directory containing Kubernetes YAMLs
+    path: south/operator-chart # Path to the directory containing Kubernetes YAMLs
     helm:
       valueFiles:
       - dev-values.yaml
