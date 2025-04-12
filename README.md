@@ -1,4 +1,4 @@
-# Redis Enterprise (RE) GitOps-Style Automated Deployment with ArgoCD
+# Redis Enterprise (RE) GitOps-Style Automated Deployment with ArgoCD on K8/Openshift
 
 This guide outlines a GitOps-style, fully automated deployment of **two Redis Enterprise (RE) clusters** — one in the **north** and one in the **south** — using **ArgoCD** on **Kubernetes or OpenShift** environments. The primary objective is to shift all manual operations to the *initial setup phase*, so that once the automation begins, there are no intermediate manual steps required.
 
@@ -68,4 +68,5 @@ kubectl create secret generic rsa-keys -n <namespace> \
 ```
 ---
 
+## Set ArgoCD on K8 
 
