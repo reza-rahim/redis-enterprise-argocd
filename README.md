@@ -103,7 +103,7 @@ docker push  rezarahim/alpine-tools:1.1
 ---
 ## Setup the South Cluster
 
-Let's look into [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml)
+Let's look into [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml) for dev env.
 
 ```
 apiVersion: argoproj.io/v1alpha1
@@ -174,3 +174,13 @@ syncOptions:
 
 - CreateNamespace=true: If the prod namespace doesn’t exist, ArgoCD will create it for you.
 
+Let's look into ArgoCD Application [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-pord-operator-argo.yaml) for prod env.
+
+Main Differencein the helm.valueFiles section:
+```
+helm:
+  valueFiles:
+  - dev-values.yaml
+  - prod-values.yaml
+```
+Helm allows multiple values files to be layered. When two or more files are used, So prod-values.yaml will override any overlapping settings from dev-values.yaml.
