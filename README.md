@@ -194,5 +194,7 @@ Helm allows multiple values files to be layered. When two or more files are used
   kubectl apply -n argocd -f south-dev-operator-argo.yaml
   kubectl get -n south-dev  po
 ```
-<img src="images/operator-south-dev.png" width="600">
+<br>
+ArgoCD UI:
+<img src="images/operator-south-dev.png" width="800">
 
