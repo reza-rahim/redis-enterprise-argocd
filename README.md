@@ -105,7 +105,7 @@ docker push  rezarahim/alpine-tools:1.1
 
 [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/)
 
-Let's look into [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml)
+Let's look into ArgoCD Application [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml)
 
 ```
 apiVersion: argoproj.io/v1alpha1
