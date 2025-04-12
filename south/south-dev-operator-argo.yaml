@@ -14,7 +14,7 @@ spec:
       - dev-values.yaml
   destination:
     server: https://kubernetes.default.svc  # Points to the in-cluster Kubernetes API
-    namespace: dev                      #Namespace to deploy the application
+    namespace: south-dev                      #Namespace to deploy the application
   #syncPolicy: {} # manual sync
   syncPolicy: 
     automated:                      # Enables automatic sync
