@@ -94,7 +94,9 @@ docker push  rezarahim/alpine-tools:1.1
 ```
 ---
 
-[Redis Enterprise for Kubernetes documentation](https://github.com/RedisLabs/redis-enterprise-k8s-docs)
+[Redis Enterprise for Kubernetes](https://redis.io/docs/latest/operate/kubernetes/)
+
+[Redis Enterprise for Kubernetes Github location for Example and CRD ](https://github.com/RedisLabs/redis-enterprise-k8s-docs)
 
 ---
 ### Sepup the South Cluster
