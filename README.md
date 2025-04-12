@@ -103,5 +103,6 @@ docker push  rezarahim/alpine-tools:1.1
 ---
 ## Setup the South Cluster
 
+Let's look int to [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml)
 
 
