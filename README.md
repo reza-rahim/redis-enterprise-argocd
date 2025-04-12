@@ -189,8 +189,9 @@ helm:
 Helm allows multiple values files to be layered. When two or more files are used, So prod-values.yaml will override any overlapping settings from dev-values.yaml.
 
 ---
-### Deploy the south-dev-operator-argo.yaml
+### Deploy the Redis Operator for south cluster.
 ```
   kubectl apply -n argocd -f south-dev-operator-argo.yaml
   kubectl get -n south-dev  po
 ```
+
