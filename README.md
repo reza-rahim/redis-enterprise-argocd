@@ -104,7 +104,9 @@ docker push  rezarahim/alpine-tools:1.1
 ---
 ## Setup the South Cluster
 
-Let's look into [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml) for dev env.
+
+
+### Let's look into [ArgoCD Application](https://argo-cd.readthedocs.io/en/stable/core_concepts/) [south-dev-operator-argo.yaml](https://github.com/reza-rahim/redis-enterprise-argocd/blob/main/south/south-dev-operator-argo.yaml) for dev env.
 
 ```
 apiVersion: argoproj.io/v1alpha1
@@ -185,3 +187,10 @@ helm:
   - prod-values.yaml
 ```
 Helm allows multiple values files to be layered. When two or more files are used, So prod-values.yaml will override any overlapping settings from dev-values.yaml.
+
+---
+### Deploy the south-dev-operator-argo.yaml
+```
+  kubectl apply -n argocd -f south-dev-operator-argo.yaml
+  kubectl get -n south-dev  po
+```
