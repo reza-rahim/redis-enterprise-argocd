@@ -4,7 +4,7 @@ This guide outlines a GitOps-style, fully automated deployment of **two Redis En
 
 ---
 
-## 🌱 Initial Setup (Manual Prerequisites)
+##  Initial Setup (Manual Prerequisites)
 
 Before enabling GitOps automation, you need to perform the following **manual setup steps**. These are **one-time operations** that prepare your environment for a fully automated RE deployment.
 
@@ -38,10 +38,11 @@ Inside the shared bucket, create a file named `clusters_topology_config.json`. T
     "primary": false
   }
 ]
+```
 
 ### 3. Create AWS Credentials Secret
 On each Kubernetes or OpenShift cluster (in the target namespace where RE will be deployed), create a Kubernetes secret with your object store credentials:
-```
+
 kubectl create secret generic aws-credentials -n <namespace> \
   --from-literal=AWS_ACCESS_KEY_ID=<your-access-key-id> \
   --from-literal=AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
