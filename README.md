@@ -82,9 +82,15 @@ kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.pas
 ```
 
 ### Argo CD Resource Hooks
-Argo CD resource hooks offer flexibility by allowing users to execute custom scripts at various stages of the application’s lifecycle. This can be particularly useful in scenarios that require going beyond the default behavior provided by Kubernetes. [More on Argo CD Resource Hooks](https://codefresh.io/learn/argo-cd/argo-cd-hooks-the-basics-and-a-quick-tutorial/)
+Argo CD resource hooks offer flexibility by allowing users to execute custom scripts at various stages of the application’s lifecycle. This can be particularly useful in scenarios that require going beyond the default behavior provided by Kubernetes. [More on Argo CD Resource Hooks](https://codefresh.io/learn/argo-cd/argo-cd-hooks-the-basics-and-a-quick-tutorial/)<br>
 
+Let's build a custom Docker container to handle various pre- and post-processing tasks using ArgoCD hooks.
 
+The [Dockerfile](docker/Dockerfile)
+```
+docker build -t rezarahim/alpine-tools:1.1 .
+docker push  rezarahim/alpine-tools:1.1
+```
 
 
 
