@@ -197,4 +197,6 @@ Helm allows multiple values files to be layered. When two or more files are used
 <br>
 ArgoCD UI:
 <img src="images/operator-south-dev.png" width="800">
+<br>
+
 
