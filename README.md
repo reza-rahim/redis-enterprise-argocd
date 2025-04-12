@@ -68,7 +68,7 @@ kubectl create secret generic rsa-keys -n <namespace> \
 ```
 ---
 
-## Set ArgoCD on K8 
+## Setup ArgoCD on K8 
 ```
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
