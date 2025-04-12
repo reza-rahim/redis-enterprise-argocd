@@ -73,9 +73,12 @@ kubectl create secret generic rsa-keys -n <namespace> \
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
+# https://localhost:8080/ for ArgoCD webUI
 kubectl port-forward svc/argocd-server -n argocd 8080:443
-argocd admin initial-password -n argocd
 
+# How to get the initial-password
+argocd admin initial-password -n argocd
+kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
 
