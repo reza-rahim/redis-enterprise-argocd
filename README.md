@@ -101,7 +101,7 @@ docker push  rezarahim/alpine-tools:1.1
 [Redis Enterprise for Kubernetes Github location for Example and CRD ](https://github.com/RedisLabs/redis-enterprise-k8s-docs)
 
 ---
-### Setup the South Cluster
+## Setup the South Cluster
 
 
 
