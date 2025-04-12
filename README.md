@@ -19,7 +19,7 @@ A **shared object store** (e.g., AWS S3, MinIO, Ceph) is required to:
 
 You’ll need to create a bucket (e.g., `re-shared-config`) accessible to both RE clusters.
 
----
+
 
 ### 2. Define Cluster Topology
 
