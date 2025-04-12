@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: south-dev-operator-argo          # Name of the ArgoCD application
+  namespace: argocd             # Namespace where ArgoCD is installed
+spec:
+  project: default              # ArgoCD project (default unless specified)
+  source:
+    repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/tree/main/south/operator-chart  # Replace with your Git repository
+    targetRevision: main         # Branch, tag, or commit SHA to deploy
+    path: north/operator-chart  # Path to the directory containing Kubernetes YAMLs
+    helm:
+      valueFiles:
+      - dev-values.yaml
+  destination:
+    server: https://kubernetes.default.svc  # Points to the in-cluster Kubernetes API
+    namespace: prod                      #Namespace to deploy the application
+  #syncPolicy: {} # manual sync
+  syncPolicy: 
+    automated:                      # Enables automatic sync
+      prune: true                    # Removes resources not in Git
+      selfHeal: true                  # Fixes out-of-sync resources automatically
+    syncOptions:
+      - CreateNamespace=true          # Creates namespace if it doesn’t exist
