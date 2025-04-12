@@ -43,6 +43,7 @@ Inside the shared bucket, create a file named `clusters_topology_config.json`. T
 ### 3. Create AWS Credentials Secret
 On each Kubernetes or OpenShift cluster (in the target namespace where RE will be deployed), create a Kubernetes secret with your object store credentials:
 
+```
 kubectl create secret generic aws-credentials -n <namespace> \
   --from-literal=AWS_ACCESS_KEY_ID=<your-access-key-id> \
   --from-literal=AWS_SECRET_ACCESS_KEY=<your-secret-access-key>
