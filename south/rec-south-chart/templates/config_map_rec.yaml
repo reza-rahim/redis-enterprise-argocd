@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: redis-acl-config
+  name: config-map-rec
 data:
   rec-config-map.sh: |
      export REC_NAME={{ .Values.recname }}
