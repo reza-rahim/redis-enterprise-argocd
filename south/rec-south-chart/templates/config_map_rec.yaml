@@ -27,4 +27,4 @@ data:
        aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
        aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
      fi
-done
+
