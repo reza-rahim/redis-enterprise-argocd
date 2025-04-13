@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: config-map-rec
 data:
-  rec-config-map.sh: |
+  config-map-rec.sh: |
      
      export S3_BUCKET={{ .Values.s3RecBucket  }}
      export CLUSTER_NAME={{ .Values.clusterName  }}
