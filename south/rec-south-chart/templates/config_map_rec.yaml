@@ -21,8 +21,8 @@ data:
      if [ "$clusername" = "$CLUSTER_NAME" ]; then
      # Example usage:
        echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
-       echo "username" | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/username.bin
-       echo "password" | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/passwd.bin
+       echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/username.bin
+       echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/passwd.bin
 
        aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
        aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
