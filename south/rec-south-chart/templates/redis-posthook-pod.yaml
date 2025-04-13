@@ -3,9 +3,6 @@ kind: Job
 metadata:
   name: redis-job
   namespace: {{ .Values.recNamespace }}
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
 
 spec:
   backoffLimit: 2
