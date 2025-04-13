@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: config-map-acl
 data:
-  config.txt: |
+  acl.sh: |
     # Create an ACL for key prefix abc
     curl -k -u "$USERNAME:$PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
