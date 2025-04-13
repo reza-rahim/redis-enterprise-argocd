@@ -59,7 +59,8 @@ data:
         echo " Some files not ready yet, retrying in 5 seconds..."
         sleep 30
      done
-
+     
+     sleep 10
      
      jq -c '.[]' cluster_config.json | while read -r item; do
         eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
