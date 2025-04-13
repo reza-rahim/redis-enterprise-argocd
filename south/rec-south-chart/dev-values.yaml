@@ -1,5 +1,5 @@
 s3RecBucket: s3://redis-argocd-bank/
-cluster: south
+clusterName: south
 env: dev
 recname: south-dev-rec
 
