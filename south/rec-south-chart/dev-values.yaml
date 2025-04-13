@@ -1,4 +1,4 @@
-s3RecBucket: s3://redis-argocd-bank/
+s3RecBucket: redis-argocd-bank
 clusterName: south
 env: dev
 recname: south-dev-rec
