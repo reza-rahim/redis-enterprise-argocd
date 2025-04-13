@@ -41,6 +41,8 @@ spec:
             source /etc/config/acl/config-map-acl.sh
             source /etc/config/rec/config-map-rec.sh
 
+            echo "done .............................."
+
         volumeMounts:
         - name: config-volume-acl
           mountPath: /etc/config/acl/
