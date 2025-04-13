@@ -36,6 +36,8 @@ spec:
                 break
               fi
             done
+
+            sleep 3600
             
         env:
         - name: USERNAME
