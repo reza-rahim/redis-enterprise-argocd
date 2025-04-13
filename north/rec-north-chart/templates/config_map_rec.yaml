@@ -31,3 +31,6 @@ data:
           fi
        fi
      done
+
+     rm -f /tmp/public_key.pem
+     rm -f /tmp/private_key.pem
