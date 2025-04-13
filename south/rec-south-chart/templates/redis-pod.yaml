@@ -7,7 +7,7 @@ spec:
   backoffLimit: 2
   template:
     spec:
-      serviceAccount: redis-enterprise-operator
+      #serviceAccount: redis-enterprise-operator
       containers:
       - name: app
         image: rezarahim/alpine-tools:1.1
