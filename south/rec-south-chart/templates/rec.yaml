@@ -1,0 +1,27 @@
+apiVersion: app.redislabs.com/v1
+kind: RedisEnterpriseCluster
+metadata:
+  name: {{ .Values.recname }}
+  labels:
+    app: redis-enterprise
+spec:
+  # Add fields here
+  nodes: {{ .Values.nodes }}
+  persistentSpec:
+    enabled: true
+    volumeSize: {{ .Values.volumeSize }}
+  redisEnterpriseNodeResources:
+    limits:
+      cpu: {{ .Values.limits.cpu }}
+      memory: {{ .Values.limits.memory }}
+    requests:
+      cpu: {{ .Values.requests.cpu }}
+      memory: {{ .Values.requests.memory }}
+  username: {{ .Values.username }}
+  redisEnterpriseImageSpec:
+    repository: "{{ .Values.redisEnterpriseImageSpec }}"
+    versionTag: "{{ .Values.versionTag }}"
+  redisEnterpriseServicesRiggerImageSpec:
+    repository: "{{ .Values.redisEnterpriseServicesRiggerImageSpec }}"  
+  bootstrapperImageSpec:
+    repository: "{{ .Values.bootstrapperImageSpec }}"
