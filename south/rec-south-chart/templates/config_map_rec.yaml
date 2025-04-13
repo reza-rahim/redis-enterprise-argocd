@@ -16,16 +16,16 @@ data:
      aws s3 cp s3://$S3_BUCKET/cluster_config.json /tmp/cluster_config.json
 
      jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
-     eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
+       eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
   
-     if [ "$clusername" = "$CLUSTER_NAME" ]; then
-     # Example usage:
-       echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
-       echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/username.bin
-       echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/passwd.bin
+       if [ "$clusername" = "$CLUSTER_NAME" ]; then
+       # Example usage:
+         echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
+         echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/username.bin
+         echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/passwd.bin
 
-       aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
-       aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
-     fi
+         aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
+         aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
+       fi
      done
 
