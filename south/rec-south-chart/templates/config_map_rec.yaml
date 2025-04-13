@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-acl-config
+data:
+  rec-config-map.sh: |
+     export REC_NAME=south
+     export S3_REC_BUCKET={{ .Values.s3RecBucket  }}
