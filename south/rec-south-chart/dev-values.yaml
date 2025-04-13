@@ -19,8 +19,8 @@ storageClass: "standard"
 volumeSize: "8000Mi"
 
 #south cluster
-apiFqdnUrl: api.apps.rerc-south.ps-redis.com
-dbFqdnSuffix: -cluster.apps.rerc-south.ps-redis.com
+apiFqdnUrl: api.south.ps-redis.com
+dbFqdnSuffix: -cluster.south.ps-redis.com
 
 method: ingress
 ingressClass: nginx 
