@@ -6,3 +6,5 @@ data:
   rec-config-map.sh: |
      export REC_NAME={{ .Values.recname }}
      export S3_REC_BUCKET={{ .Values.s3RecBucket  }}
+     export CLUSTER={{ .Values.cluster  }}
+     export ENVIRONMENT={{ .Values.environment  }} 
