@@ -1,0 +1,83 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: redis-job
+  namespace: {{ .Values.recNamespace  }}
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: app
+        image: rezarahim/alpine-tools:1.1
+        imagePullPolicy: Always
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            echo "$PRIVATE_KEY" | base64 -d > /tmp/private_key.pem
+            echo "$PUBLIC_KEY" | base64 -d > /tmp/public_key.pem
+            count=0
+            max=125
+            while true; do
+              curl -k -u "$USERNAME:$PASSWORD" https://rec-prod:9443/v1/cluster
+              if [ $? -eq 0 ]; then
+                echo "Curl succeeded, breaking loop."
+                break
+              else
+                echo "Curl failed, retrying in 10 seconds... ($count/$max)"
+                sleep 10
+              fi
+
+              count=$((count + 1))
+              if [ "$count" -ge "$max" ]; then
+                echo "Reached max retries ($max), exiting loop."
+                break
+              fi
+            done
+
+            sleep 3600
+            
+        env:
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.recname }}
+              key: username
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.recname }}
+              key: password
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_SECRET_ACCESS_KEY
+        - name: PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: rsa-keys
+              key: private_key.pem
+        - name: PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: rsa-keys
+              key: public_key.pem
+        - name: HEATHCHECK_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: health-check-user
+              key: USERNAME   
+        - name: HEATHCHECK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: health-check-user
+              key: PASSWORD       
+          
