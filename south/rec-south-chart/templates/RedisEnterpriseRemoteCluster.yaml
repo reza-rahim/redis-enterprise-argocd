@@ -1,0 +1,10 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseRemoteCluster
+metadata:
+  name: $(NAME)
+spec:
+  recName: $RECNAME)
+  apiFqdnUrl: $(API)
+  dbFqdnSuffix: $(DB)
+  apiPort: 443
+  secretName: $(NAME)
