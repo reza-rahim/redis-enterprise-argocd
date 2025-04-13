@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: redis-job
-  namespace: {{ .Values.recNamespace  }}
+  namespace: {{ .Values.recNamespace }}
 spec:
   backoffLimit: 2
   template:
@@ -38,7 +38,12 @@ spec:
             done
 
             sleep 3600
-            
+
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+          readOnly: true
+
         env:
         - name: USERNAME
           valueFrom:
@@ -74,10 +79,14 @@ spec:
           valueFrom:
             secretKeyRef:
               name: health-check-user
-              key: username   
+              key: username
         - name: HEATHCHECK_PASSWORD
           valueFrom:
             secretKeyRef:
               name: health-check-user
-              key: password       
-  
+              key: password
+
+      volumes:
+      - name: config-volume
+        configMap:
+          name: config-map-acl
