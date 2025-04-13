@@ -25,3 +25,11 @@ spec:
     repository: "{{ .Values.redisEnterpriseServicesRiggerImageSpec }}"  
   bootstrapperImageSpec:
     repository: "{{ .Values.bootstrapperImageSpec }}"
+  ingressOrRouteSpec:
+    apiFqdnUrl: {{ .Values.apiIngressUrl }}
+    dbFqdnSuffix:  {{ .Values.dbIngressSuffix }}
+    method:  {{ .Values.method }}
+    # for nginx ingress controller
+    ingressAnnotations: 
+       ingress.kubernetes.io/ssl-passthrough: "true"
+       kubernetes.io/ingress.class: {{ .Values.ingressClass }}   
