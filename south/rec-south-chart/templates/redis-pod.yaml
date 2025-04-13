@@ -40,9 +40,12 @@ spec:
             sleep 3600
 
         volumeMounts:
-        - name: config-volume
-          mountPath: /etc/config
+        - name: config-volume-acl
+          mountPath: /etc/config/acl/
           readOnly: true
+        - name: config-volume-rec
+          mountPath: /etc/config/rec/
+          readOnly: true  
 
         env:
         - name: USERNAME
@@ -87,6 +90,9 @@ spec:
               key: password
 
       volumes:
-      - name: config-volume
+      - name: config-volume-acl
         configMap:
           name: config-map-acl
+      - name: config-volume-rec
+        configMap:
+          name: config-map-rec   
