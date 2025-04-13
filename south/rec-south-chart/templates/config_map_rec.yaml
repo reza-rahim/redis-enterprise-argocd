@@ -9,7 +9,7 @@ data:
      export CLUSTER_NAME={{ .Values.clusterName  }}
      export ENVIRONMENT={{ .Values.environment  }}
      export REC_NAME={{ .Values.recname }}
-$
+
      echo $PRIVATE_KEY > /tmp/private_key.pem
      echo $PUBLIC_KEY > /tmp/public_key.pem
      
