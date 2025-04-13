@@ -235,5 +235,5 @@ ArgoCD UI:
 ### Deploy the Redis cluser for South cluster.
 ```
 kubectl apply -n argocd -f north-dev-rec-argo.yaml
-  kubectl get -n south-dev  po
-
+kubectl get -n south-dev  po
+```
