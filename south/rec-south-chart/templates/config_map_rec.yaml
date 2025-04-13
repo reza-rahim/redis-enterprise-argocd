@@ -10,8 +10,8 @@ data:
      export ENVIRONMENT={{ .Values.environment  }}
      export REC_NAME={{ .Values.recname }}
 
-     kubectl get secret rsa-keys -n south-dev -o jsonpath="{.data.public_key\.pem}" | base64 -d > /tmp/public_key.pem
-     kubectl get secret rsa-keys -n south-dev -o jsonpath="{.data.private_key\.pem}" | base64 -d > /tmp/private_key.pem
+     kubectl get secret rsa-keys  -o jsonpath="{.data.public_key\.pem}" | base64 -d > /tmp/public_key.pem
+     kubectl get secret rsa-keys  -o jsonpath="{.data.private_key\.pem}" | base64 -d > /tmp/private_key.pem
      
      aws s3 cp s3://$S3_BUCKET/cluster_config.json /tmp/cluster_config.json
 
@@ -79,3 +79,6 @@ data:
         --from-literal=password="$PASSWD"
 
      done
+
+     rm -f /tmp/public_key.pem
+     rm -f /tmp/private_key.pem
