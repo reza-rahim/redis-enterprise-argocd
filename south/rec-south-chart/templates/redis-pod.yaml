@@ -16,8 +16,6 @@ spec:
           - "/bin/sh"
           - "-c"
           - |
-            echo "$PRIVATE_KEY" | base64 -d > /tmp/private_key.pem
-            echo "$PUBLIC_KEY" | base64 -d > /tmp/public_key.pem
             count=0
             max=125
             while true; do
