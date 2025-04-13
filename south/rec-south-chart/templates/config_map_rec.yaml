@@ -77,7 +77,7 @@ data:
         #echo $USERNAME $PASSWD
 
         kubectl delete secret  $clusername
-        kubectl create secret  $clusername\
+        kubectl create secret generic $clusername\
         --from-literal=username="$USERNAME" \
         --from-literal=password="$PASSWD"
      done
