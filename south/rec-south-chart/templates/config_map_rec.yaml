@@ -62,7 +62,7 @@ data:
      
      sleep 10
      
-     jq -c '.[]' cluster_config.json | while read -r item; do
+     jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
         eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
 
         # Example usage:
