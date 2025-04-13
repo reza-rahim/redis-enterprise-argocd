@@ -48,7 +48,7 @@ data:
            else
              echo " Found: $s3_dir/username.bin"
            fi
-        done < <(jq -c '.[]' cluster_config.json)
+        done < <(jq -c '.[]' /tmp/cluster_config.json)
 
         # Exit only if all files were found
         if [ "$all_found" = true ]; then
