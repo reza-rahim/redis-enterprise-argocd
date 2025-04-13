@@ -4,7 +4,27 @@ metadata:
   name: config-map-rec
 data:
   rec-config-map.sh: |
+     
+     export S3_BUCKET={{ .Values.s3RecBucket  }}
+     export CLUSTER_NAME={{ .Values.clusterName  }}
+     export ENVIRONMENT={{ .Values.environment  }}
      export REC_NAME={{ .Values.recname }}
-     export S3_REC_BUCKET={{ .Values.s3RecBucket  }}
-     export CLUSTER={{ .Values.cluster  }}
-     export ENVIRONMENT={{ .Values.environment  }} 
+$
+     echo $PRIVATE_KEY > /tmp/private_key.pem
+     echo $PUBLIC_KEY > /tmp/public_key.pem
+     
+     aws s3 cp s3://$S3_BUCKET/cluster_config.json /tmp/cluster_config.json
+
+     jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
+     eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
+  
+     if [ "$clusername" = "$CLUSTER_NAME" ]; then
+     # Example usage:
+       echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
+       echo "username" | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/username.bin
+       echo "password" | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/passwd.bin
+
+       aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
+       aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
+     fi
+done
