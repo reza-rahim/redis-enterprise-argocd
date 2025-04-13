@@ -40,13 +40,13 @@ data:
         while IFS= read -r item; do
            eval $(echo "$item" | jq -r 'to_entries | map("\(.key)=\(.value|@sh)") | .[]')
 
-           echo "Checking: s3://$S3_BUCKET/$s3_dir/username.bin"
+           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.bin"
 
-           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/username.bin" > /dev/null 2>&1; then
+           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.bin" > /dev/null 2>&1; then
               echo "Not found: $s3_dir/username.bin"
               all_found=false
            else
-             echo " Found: $s3_dir/username.bin"
+             echo " Found: $s3_dir/passwd.bin"
            fi
         done < <(jq -c '.[]' /tmp/cluster_config.json)
 
