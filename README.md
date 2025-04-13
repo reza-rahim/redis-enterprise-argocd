@@ -68,6 +68,16 @@ kubectl create secret generic rsa-keys -n <namespace> \
   --from-file=private_key.pem \
   --from-file=public_key.pem
 ```
+
+### 5. Create username and password for health check upser
+
+
+```
+kubectl create secret generic health-check-user -n  $NSP \
+  --from-literal=USERNAME=health-check-user@example.com \
+  --from-literal=PASSWORD=password
+```
+
 ---
 
 ## Setup ArgoCD on K8 
