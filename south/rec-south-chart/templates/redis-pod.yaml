@@ -68,16 +68,7 @@ spec:
             secretKeyRef:
               name: aws-credentials
               key: AWS_SECRET_ACCESS_KEY
-        - name: PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: rsa-keys
-              key: private_key.pem
-        - name: PUBLIC_KEY
-          valueFrom:
-            secretKeyRef:
-              name: rsa-keys
-              key: public_key.pem
+       
         - name: HEATHCHECK_USERNAME
           valueFrom:
             secretKeyRef:
