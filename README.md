@@ -200,6 +200,6 @@ ArgoCD UI:
 <br>
 
 ---
-### Deploy the Redis cluser for south cluster.
+### Deploy the Redis cluser for South cluster.
 
 
