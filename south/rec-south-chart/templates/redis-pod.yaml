@@ -80,16 +80,4 @@ spec:
             secretKeyRef:
               name: health-check-user
               key: password       
-        volumeMounts:
-        #- name: config-volume-rec
-        #  mountPath: /etc/config/rec
-        - name: config-volume-acl
-          mountPath: /etc/config/acl  
-      volumes:
-       #- name: config-volume-rec
-       # configMap:
-       #   name: config-map-rec
-       - name: config-volume-acl
-        configMap:
-          name: config-map-acl
-          
+  
