@@ -1,3 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-map-acl
+data:
+
 apiVersion: app.redislabs.com/v1alpha1
 kind: RedisEnterpriseRemoteCluster
 metadata:
