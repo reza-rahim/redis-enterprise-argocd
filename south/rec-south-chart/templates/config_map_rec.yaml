@@ -72,8 +72,8 @@ data:
         aws s3 cp  s3://$S3_BUCKET/$s3_dir/username.bin /tmp/tmp_username.bin
         aws s3 cp  s3://$S3_BUCKET/$s3_dir/passwd.bin /tmp/tmp_passwd.bin
 
-        export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin | base64 )
-        export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin | base64 )
+        export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin  )
+        export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin  )
         #echo $USERNAME $PASSWD
 
         kubectl create secret generic  $clusername\
