@@ -38,8 +38,8 @@ spec:
                 break
               fi
             done
-            #source /etc/config/acl/config-map-acl.sh
-            sleep 3600
+            source /etc/config/acl/config-map-acl.sh
+            source /etc/config/rec/config-map-rec.sh
 
         volumeMounts:
         - name: config-volume-acl
