@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata:h
-  name: nort-dev-rec          # Name of the ArgoCD application
+metadata:
+  name: north-dev-rec          # Name of the ArgoCD application
   namespace: argocd             # Namespace where ArgoCD is installed
 spec:
   project: default              # ArgoCD project (default unless specified)
   source:
     repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/  # Replace with your Git repository
     targetRevision: main         # Branch, tag, or commit SHA to deploy
-    path: north/rec-north-chart  # Path to the directory containing Kubernetes YAMLs
+    path: south/rec-north-chart  # Path to the directory containing Kubernetes YAMLs
     helm:
       valueFiles:
       - dev-values.yaml
