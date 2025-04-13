@@ -48,12 +48,12 @@ spec:
           readOnly: true  
 
         env:
-        - name: USERNAME
+        - name: REC_USERNAME
           valueFrom:
             secretKeyRef:
               name: {{ .Values.recname }}
               key: username
-        - name: PASSWORD
+        - name: REC_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.recname }}
