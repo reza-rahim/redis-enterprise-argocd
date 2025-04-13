@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: redis-job
+  namespace: {{ .Values.recNamespace }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      serviceAccount: redis-enterprise-operator
+      restartPolicy: OnFailure
+      containers:
+      - name: app
+        image: rezarahim/alpine-tools:1.1
+        imagePullPolicy: Always
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            count=0
+            max=125
+            while true; do
+              curl -k -u "$USERNAME:$PASSWORD" https://{{ .Values.recname }}:9443/v1/cluster
+              if [ $? -eq 0 ]; then
+                echo "Curl succeeded, breaking loop."
+                break
+              else
+                echo "Curl failed, retrying in 10 seconds... ($count/$max)"
+                sleep 10
+              fi
+
+              count=$((count + 1))
+              if [ "$count" -ge "$max" ]; then
+                echo "Reached max retries ($max), exiting loop."
+                break
+              fi
+            done
+            source /etc/config/acl/config-map-acl.sh
+            source /etc/config/rec/config-map-rec.sh
+
+            echo "done .............................."
+
+        volumeMounts:
+        - name: config-volume-acl
+          mountPath: /etc/config/acl/
+          readOnly: true
+        - name: config-volume-rec
+          mountPath: /etc/config/rec/
+          readOnly: true  
+
+        env:
+        - name: REC_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.recname }}
+              key: username
+        - name: REC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.recname }}
+              key: password
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_ACCESS_KEY_ID
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: aws-credentials
+              key: AWS_SECRET_ACCESS_KEY
+       
+        - name: HEATHCHECK_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: health-check-user
+              key: username
+        - name: HEATHCHECK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: health-check-user
+              key: password
+
+      volumes:
+      - name: config-volume-acl
+        configMap:
+          name: config-map-acl
+      - name: config-volume-rec
+        configMap:
+          name: config-map-rec   
