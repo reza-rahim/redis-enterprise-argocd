@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config_map_acl
+data:
+  config.txt: |
+    # Create an ACL for key prefix abc
+    curl -k -u "$USERNAME:$PASSWORD" -X POST \
+    -H 'Content-Type: application/json' \
+    -d '{ "name": "health-check-acl", "acl": "~xxxxx" }' \
+    https://{{ .Values.recname  }}:9443/v1/redis_acls
+
+    # Create abc-role role_uids=2
+    curl -k -u "$USERNAME:$PASSWORD" -X POST \
+    -H 'Content-Type: application/json' \
+    -d '{"management":"none","name":"health-check-role"}' \
+    https://{{ .Values.recname  }}:9443/v1/roles
+
+    #
+    curl -k -u "$USERNAME:$PASSWORD" -X POST   \
+    -H 'Content-Type: application/json' -d '{ "email": "health-check-user@example.com", "password": $HEALTHCHECK_USER, "name": $HEALTHCHECK_PASSWD, "role_uids": [ 2 ], "auth_method": "regular" }' \
+    https://rec-prod:9443/v1/users
