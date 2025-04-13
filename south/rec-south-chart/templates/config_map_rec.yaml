@@ -4,5 +4,5 @@ metadata:
   name: redis-acl-config
 data:
   rec-config-map.sh: |
-     export REC_NAME={{ .Values.srecname }}
+     export REC_NAME={{ .Values.recname }}
      export S3_REC_BUCKET={{ .Values.s3RecBucket  }}
