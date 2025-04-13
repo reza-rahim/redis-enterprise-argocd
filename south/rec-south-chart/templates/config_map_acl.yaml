@@ -4,7 +4,7 @@ metadata:
   name: config_map_acl
 data:
   config.txt: |
-    # Create an ACL for key prefix abc
+    # Create an ACL for key prefix xxxxx
     curl -k -u "$USERNAME:$PASSWORD" -X POST \
     -H 'Content-Type: application/json' \
     -d '{ "name": "health-check-acl", "acl": "~xxxxx" }' \
@@ -18,5 +18,7 @@ data:
 
     #
     curl -k -u "$USERNAME:$PASSWORD" -X POST   \
-    -H 'Content-Type: application/json' -d '{ "email": "health-check-user@example.com", "password": $HEALTHCHECK_USER, "name": $HEALTHCHECK_PASSWD, "role_uids": [ 2 ], "auth_method": "regular" }' \
+    -H 'Content-Type: application/json' -d '{ "email": "health-check-user@example.com", "password": $HEALTHCHECK_PASSWORD, "name": $HEALTHCHECK_USER, "role_uids": [ 2 ], "auth_method": "regular" }' \
     https://rec-prod:9443/v1/users
+
+  
