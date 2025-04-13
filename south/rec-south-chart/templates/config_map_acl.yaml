@@ -5,19 +5,19 @@ metadata:
 data:
   config-map-acl.sh: |
     # Create an ACL for key prefix abc
-    curl -k -u "$USERNAME:$PASSWORD" -X POST \
+    curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
       -d '{ "name": "health-check-acl", "acl": "~xxxxx" }' \
       https://{{ .Values.recname }}:9443/v1/redis_acls
 
     # Create abc-role role_uids=2
-    curl -k -u "$USERNAME:$PASSWORD" -X POST \
+    curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
       -d '{"management":"none","name":"health-check-role"}' \
       https://{{ .Values.recname }}:9443/v1/roles
 
     # Create user
-    curl -k -u "$USERNAME:$PASSWORD" -X POST \
+    curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
       -d '{ "email": "health-check-user@example.com", "password": "$HEATHCHECK_PASSWORD", "name": "$HEATHCHECK_USERNAME", "role_uids": [ 2 ], "auth_method": "regular" }' \
       https://{{ .Values.recname }}:9443/v1/users
