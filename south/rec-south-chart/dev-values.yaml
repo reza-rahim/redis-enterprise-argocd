@@ -1,0 +1,26 @@
+env: dev
+recname: rec-south
+nodes: 3
+
+redisEnterpriseImageSpec: redislabs/redis
+redisEnterpriseServicesRiggerImageSpec: redislabs/k8s-controller
+bootstrapperImageSpec: redislabs/operator
+versionTag: 7.8.4-95
+
+limits:
+    cpu: "2000m"
+    memory: "4000Mi"
+requests:
+    cpu: "2000m"
+    memory: "4000Mi"
+nodes: 3
+storageClass: "standard"
+volumeSize: "8000Mi"
+
+#south cluster
+apiFqdnUrl: api.apps.rerc-south.ps-redis.com
+dbFqdnSuffix: -cluster.apps.rerc-south.ps-redis.com
+
+method: ingress
+ingressClass: nginx 
+username: test@example.com
