@@ -19,5 +19,5 @@ data:
     # Create user
     curl -k -u "$USERNAME:$PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
-      -d '{ "email": "health-check-user@example.com", "password": #HEATHCHECKPASSWORD, "name": $HEATHCHECKUSERNAME, "role_uids": [ 2 ], "auth_method": "regular" }' \
+      -d '{ "email": "health-check-user@example.com", "password": $HEATHCHECKPASSWORD, "name": $HEATHCHECKUSERNAME, "role_uids": [ 2 ], "auth_method": "regular" }' \
       https://{{ .Values.recname }}:9443/v1/users
