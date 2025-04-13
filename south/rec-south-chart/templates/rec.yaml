@@ -26,8 +26,8 @@ spec:
   bootstrapperImageSpec:
     repository: "{{ .Values.bootstrapperImageSpec }}"
   ingressOrRouteSpec:
-    apiFqdnUrl: {{ .Values.apiIngressUrl }}
-    dbFqdnSuffix:  {{ .Values.dbIngressSuffix }}
+    apiFqdnUrl: {{ .Values.apiFqdnUrl }}
+    dbFqdnSuffix:  {{ .Values.dbFqdnSuffix }}
     method:  {{ .Values.method }}
     # for nginx ingress controller
     ingressAnnotations: 
