@@ -3,9 +3,6 @@ kind: Job
 metadata:
   name: redis-job
   namespace: {{ .Values.recNamespace  }}
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   backoffLimit: 2
   template:
@@ -83,5 +80,16 @@ spec:
             secretKeyRef:
               name: health-check-user
               key: password       
-
+        volumeMounts:
+        #- name: config-volume-rec
+        #  mountPath: /etc/config/rec
+        - name: config-volume-acl
+          mountPath: /etc/config/acl  
+      volumes:
+       #- name: config-volume-rec
+       # configMap:
+       #   name: config-map-rec
+       - name: config-volume-acl
+        configMap:
+          name: config-map-acl
           
