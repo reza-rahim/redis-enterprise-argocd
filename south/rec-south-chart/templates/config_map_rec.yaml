@@ -75,7 +75,7 @@ data:
         export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin | base64 )
         #echo $USERNAME $PASSWD
 
-        kubectl create secret generic -n $namespace $clusername\
+        kubectl create secret generic  $clusername\
         --from-literal=username="$USERNAME" \
         --from-literal=password="$PASSWD"
 
