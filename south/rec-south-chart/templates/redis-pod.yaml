@@ -24,7 +24,7 @@ spec:
             count=0
             max=125
             while true; do
-              curl -k -u "$USERNAME:$PASSWORD" https://rec-prod:9443/v1/cluster
+              curl -k -u "$USERNAME:$PASSWORD" https://{{ .Values.recname }}:9443/v1/cluster
               if [ $? -eq 0 ]; then
                 echo "Curl succeeded, breaking loop."
                 break
