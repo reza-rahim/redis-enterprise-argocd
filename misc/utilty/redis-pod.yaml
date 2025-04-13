@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: redis-pod
 spec:
-  #serviceAccountName: redis-enterprise-operator
+  serviceAccountName: redis-enterprise-operator
   containers:
     - name: app
       image: rezarahim/alpine-tools:1.1
