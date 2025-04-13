@@ -214,4 +214,10 @@ ArgoCD UI:
 ---
 ### Deploy the Redis cluser for South cluster.
 
+<br>
+ArgoCD UI:
+<img src="images/rec-south-dev.png" width="800">
+<br>
+
+
 
