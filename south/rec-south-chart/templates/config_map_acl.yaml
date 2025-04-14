@@ -20,5 +20,5 @@ data:
     curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
     -H 'Content-Type: application/json' \
     -d "{\"email\": \"health-check-user@example.com\", \"password\": \"$HEATHCHECK_PASSWORD\", \"name\": \"$HEATHCHECK_USERNAME\", \"role_uids\": [2], \"auth_method\": \"regular\"}" \
-    "https://${REC_HOSTNAME}:9443/v1/users"
+    "https://{{ .Values.recname }}:9443/v1/users"
 
