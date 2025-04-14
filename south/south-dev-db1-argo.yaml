@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: south-dev-operator-argo          # Name of the ArgoCD application
+  name: south-dev-db1-argo          # Name of the ArgoCD application
   namespace: argocd             # Namespace where ArgoCD is installed
 spec:
   project: default              # ArgoCD project (default unless specified)
