@@ -23,7 +23,7 @@ You’ll need to create a bucket (e.g., `re-shared-config`) accessible to both R
 
 ### 2. Define Cluster Topology
 
-Inside the shared bucket, create a file named `clusters_topology_config.json`. This file outlines the participating RE clusters, their roles, and where to store their state/configuration within the bucket. <br>
+Inside the shared bucket, create a file named `cluster_config.json`. This file outlines the participating RE clusters, their roles, and where to store their state/configuration within the bucket. <br>
 In this example, we will assume north is the primary cluster for deployment purpose. 
 
 
