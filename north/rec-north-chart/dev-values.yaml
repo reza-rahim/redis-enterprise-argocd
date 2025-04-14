@@ -2,6 +2,7 @@ s3RecBucket: redis-argocd-bank
 clusterName: north
 env: dev
 recname: north-dev-rec
+namespace: north-dev
 
 nodes: 3
 
