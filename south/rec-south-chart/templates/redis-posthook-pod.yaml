@@ -20,6 +20,10 @@ spec:
           - "/bin/sh"
           - "-c"
           - |
+          
+            kubectl get secret rsa-keys  -o jsonpath="{.data.public_key\.pem}" | base64 -d > /tmp/public_key.pem
+            kubectl get secret rsa-keys  -o jsonpath="{.data.private_key\.pem}" | base64 -d > /tmp/private_key.pem
+            
             count=0
             max=125
             while true; do
