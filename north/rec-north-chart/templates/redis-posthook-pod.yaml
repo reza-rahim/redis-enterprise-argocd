@@ -1,93 +1,101 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: redis-job
-  namespace: {{ .Values.recNamespace }}
-  annotations:
-    "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": before-hook-creation
-spec:
-  backoffLimit: 2
-  template:
-    spec:
-      serviceAccount: redis-enterprise-operator
-      restartPolicy: OnFailure
-      containers:
-      - name: app
-        image: rezarahim/alpine-tools:1.1
-        imagePullPolicy: Always
-        command:
-          - "/bin/sh"
-          - "-c"
-          - |
-            count=0
-            max=125
-            while true; do
-              curl -k -u "$USERNAME:$PASSWORD" https://{{ .Values.recname }}:9443/v1/cluster
-              if [ $? -eq 0 ]; then
-                echo "Curl succeeded, breaking loop."
-                break
-              else
-                echo "Curl failed, retrying in 10 seconds... ($count/$max)"
-                sleep 10
-              fi
+  name: config-map-rec
+data:
+  config-map-rec.sh: |
+     
+     export S3_BUCKET={{ .Values.s3RecBucket  }}
+     export CLUSTER_NAME={{ .Values.clusterName  }}
+     export ENVIRONMENT={{ .Values.environment  }}
+     export REC_NAME={{ .Values.recname }}
+     export NAMESPACE={{ .Values.namespace }}
 
-              count=$((count + 1))
-              if [ "$count" -ge "$max" ]; then
-                echo "Reached max retries ($max), exiting loop."
-                break
-              fi
-            done
-            source /etc/config/acl/config-map-acl.sh
-            source /etc/config/rec/config-map-rec.sh
+     
+     aws s3 cp s3://$S3_BUCKET/cluster_config.json /tmp/cluster_config.json
 
-            echo "done .............................."
+     jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
+       eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
+  
+       if [ "$clusername" = "$CLUSTER_NAME" ]; then
+       # Example usage:
+         echo "clusername: $clusername, s3_dir: $s3_dir"
+         echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  | base64 >  /tmp/username.base64 
+         echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  | base64 > /tmp/passwd.base64 
 
-        volumeMounts:
-        - name: config-volume-acl
-          mountPath: /etc/config/acl/
-          readOnly: true
-        - name: config-volume-rec
-          mountPath: /etc/config/rec/
-          readOnly: true  
+         
+         aws s3 cp /tmp/username.base64 s3://$S3_BUCKET/$s3_dir/
+         aws s3 cp /tmp/passwd.base64 s3://$S3_BUCKET/$s3_dir/
+       fi
+     done
+     echo "primary cluester ................"
+     #it's primary cluster
+     while true; do
+        all_found=true
 
-        env:
-        - name: REC_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.recname }}
-              key: username
-        - name: REC_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.recname }}
-              key: password
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: aws-credentials
-              key: AWS_ACCESS_KEY_ID
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: aws-credentials
-              key: AWS_SECRET_ACCESS_KEY
-       
-        - name: HEATHCHECK_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: health-check-user
-              key: username
-        - name: HEATHCHECK_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: health-check-user
-              key: password
+        # Loop over each cluster item in the JSON
+        while IFS= read -r item; do
+           eval $(echo "$item" | jq -r 'to_entries | map("\(.key)=\(.value|@sh)") | .[]')
 
-      volumes:
-      - name: config-volume-acl
-        configMap:
-          name: config-map-acl
-      - name: config-volume-rec
-        configMap:
-          name: config-map-rec   
+           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.base64"
+
+           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.base64" > /dev/null 2>&1; then
+              echo "Not found: $s3_dir/username.base64"
+              all_found=false
+           else
+             echo " Found: $s3_dir/passwd.base64"
+           fi
+        done < <(jq -c '.[]' /tmp/cluster_config.json)
+
+        # Exit only if all files were found
+        if [ "$all_found" = true ]; then
+          echo "All required S3 files are present!"
+          break
+        fi
+     
+        echo " Some files not ready yet, retrying in 5 seconds..."
+        sleep 30
+     done
+     
+     sleep 10
+     
+     jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
+       # Extract all key-value pairs into shell variables
+       eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
+
+       echo "clusername: $clusername, s3_dir: $s3_dir, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
+
+       rm -f /tmp/tmp_username.* /tmp/tmp_passwd.*
+
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/username.base64" /tmp/tmp_username.base64
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/passwd.base64" /tmp/tmp_passwd.base64
+
+       cat /tmp/tmp_username.base64 | base64 -d > /tmp/tmp_username.bin
+       cat /tmp/tmp_passwd.base64 | base64 -d > /tmp/tmp_passwd.bin
+
+       export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin)
+       export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin)
+
+       kubectl delete secret "$clusername" --ignore-not-found
+       kubectl create secret generic "$clusername" \
+         --from-literal=username="$USERNAME" \
+         --from-literal=password="$PASSWD"
+
+       kubectl delete RedisEnterpriseRemoteCluster "$clusername" --ignore-not-found
+      
+       kubectl apply -f - <<EOF
+     apiVersion: app.redislabs.com/v1alpha1
+     kind: RedisEnterpriseRemoteCluster
+     metadata:
+      name: ${clusername}
+     spec:
+       recName: ${REC_NAME}
+       recNamespace: ${NAMESPACE}
+       apiFqdnUrl: ${apiFqdnUrl}
+       dbFqdnSuffix: ${dbFqdnSuffix}
+       apiPort: ${apiPort}
+       secretName: ${clusername}
+     EOF
+
+     done
+ 
