@@ -2,6 +2,7 @@ s3RecBucket: redis-argocd-bank
 clusterName: south
 env: dev
 recname: south-dev-rec
+namespace: south-dev
 
 nodes: 3
 
