@@ -65,41 +65,40 @@ data:
      sleep 10
      
      jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
-    # Extract all key-value pairs into shell variables
-    eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
+       # Extract all key-value pairs into shell variables
+       eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
 
-    echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
+       echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
 
-    rm -f /tmp/tmp_username.bin /tmp/tmp_passwd.bin
+       rm -f /tmp/tmp_username.bin /tmp/tmp_passwd.bin
 
-    aws s3 cp "s3://$S3_BUCKET/$s3_dir/username.bin" /tmp/tmp_username.bin
-    aws s3 cp "s3://$S3_BUCKET/$s3_dir/passwd.bin" /tmp/tmp_passwd.bin
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/username.bin" /tmp/tmp_username.bin
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/passwd.bin" /tmp/tmp_passwd.bin
 
-    export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin)
-    export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin)
+       export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin)
+       export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin)
 
-    kubectl delete secret "$clusername" --ignore-not-found
-    kubectl create secret generic "$clusername" \
-        --from-literal=username="$USERNAME" \
-        --from-literal=password="$PASSWD"
+       kubectl delete secret "$clusername" --ignore-not-found
+       kubectl create secret generic "$clusername" \
+         --from-literal=username="$USERNAME" \
+         --from-literal=password="$PASSWD"
 
-    kubectl delete RedisEnterpriseRemoteCluster "$clusername" --ignore-not-found
-    kubectl apply -f - <<EOF
-    apiVersion: app.redislabs.com/v1alpha1
-    kind: RedisEnterpriseRemoteCluster
-    metadata:
-      name: ${clusername}
-    spec:
-      recName: ${REC_NAME}
-      recNamespace: ${NAMESPACE}
-      apiFqdnUrl: ${apiFqdnUrl}
-      dbFqdnSuffix: ${dbFqdnSuffix}
-      apiPort: ${apiPort}
-      secretName: ${clusername}
-EOF
+       kubectl delete RedisEnterpriseRemoteCluster "$clusername" --ignore-not-found
+      
+       kubectl apply -f - <<EOF
+       apiVersion: app.redislabs.com/v1alpha1
+       kind: RedisEnterpriseRemoteCluster
+       metadata:
+         name: ${clusername}
+       spec:
+         recName: ${REC_NAME}
+         recNamespace: ${NAMESPACE}
+         apiFqdnUrl: ${apiFqdnUrl}
+         dbFqdnSuffix: ${dbFqdnSuffix}
+         apiPort: ${apiPort}
+         secretName: ${clusername}
+       EOF
 
-done
-
-
+     done
      rm -f /tmp/public_key.pem
      rm -f /tmp/private_key.pem
