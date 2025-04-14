@@ -61,6 +61,5 @@ spec:
       configMap:
         name: config-map-rec
     - name: config-volume-remote-cluster
-        configMap:
-          name: config-map-remote-cluster     
-
+      configMap:
+        name: config-map-remote-cluster
