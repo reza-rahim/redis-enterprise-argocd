@@ -33,7 +33,7 @@ In this example, we will assume north is the primary cluster for deployment purp
     "clusername": "south",
     "s3_dir": "south",
     "primary": false,
-    "apiFqdnUrl": "api.south.ps-redis.com"
+    "apiFqdnUrl": "api.south.ps-redis.com",
     "dbFqdnSuffix": "-cluster.south.ps-redis.com",
     "apiPort": 443
   },
@@ -41,7 +41,7 @@ In this example, we will assume north is the primary cluster for deployment purp
     "clusername": "north",
     "s3_dir": "north",
     "primary": true,
-    "apiFqdnUrl": "api.north.ps-redis.com"
+    "apiFqdnUrl": "api.north.ps-redis.com",
     "dbFqdnSuffix": "-cluster.north.ps-redis.com",
     "apiPort": 443
   }
