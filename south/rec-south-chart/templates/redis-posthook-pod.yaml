@@ -50,7 +50,10 @@ spec:
         - name: config-volume-rec
           mountPath: /etc/config/rec/
           readOnly: true  
-
+        - name: config-map-remote-cluster
+          mountPath: /etc/config/remote/
+          readOnly: true  
+        
         env:
         - name: REC_USERNAME
           valueFrom:
@@ -91,3 +94,7 @@ spec:
       - name: config-volume-rec
         configMap:
           name: config-map-rec   
+      - name: config-map-remote-cluster
+        configMap:
+          name: config-map-remote-cluster 
+          
