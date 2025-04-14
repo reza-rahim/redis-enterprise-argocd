@@ -246,3 +246,14 @@ ArgoCD UI:
 kubectl apply -n argocd -f north-dev-rec-argo.yaml
 kubectl get -n south-dev  po
 ```
+---
+1. Kubernetes Job (redis-job)
+- Triggered post-install using Helm hooks.
+
+- Waits for the target Redis Enterprise Cluster API to become available via repeated curl checks.
+
+--Sources two config scripts:
+
+--config-map-acl.sh (ACL/user setup)
+
+--config-map-rec.sh (cluster sync and secret handling)
