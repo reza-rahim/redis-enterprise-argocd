@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: config-map-acl
+  name: config-map-remote-cluster
 data:
-
-apiVersion: app.redislabs.com/v1alpha1
-kind: RedisEnterpriseRemoteCluster
-metadata:
-  name: $(NAME)
-spec:
-  recName: $RECNAME)
-  apiFqdnUrl: $(API)
-  dbFqdnSuffix: $(DB)
-  apiPort: 443
-  secretName: $(NAME)
+  config-map-remote-cluster.sh
+    apiVersion: app.redislabs.com/v1alpha1
+    kind: RedisEnterpriseRemoteCluster
+    metadata:
+       name: $(NAME)
+    spec:
+      recName: $R(ECNAME)
+      apiFqdnUrl: $(API)
+      dbFqdnSuffix: $(DB)
+      apiPort: $(PORT)
+      secretName: $(NAME)
