@@ -24,7 +24,12 @@ You’ll need to create a bucket (e.g., `re-shared-config`) accessible to both R
 ### 2. Define Cluster Topology
 
 Inside the shared bucket, create a file named `cluster_config.json`. This file outlines the participating RE clusters, their roles, and where to store their state/configuration within the bucket. <br>
-In this example, we will assume north is the primary cluster for deployment purpose. 
+The values in the JSON file may vary across environments like dev, test, and prod. To handle this, we can create environment-specific directories and place the corresponding cluster_config.json file in each one.
+
+- [S3_bucket]/dev
+- [S3_bucket]/test
+- [S3_bucket]/prod
+
 
 
 ```json
@@ -32,7 +37,6 @@ In this example, we will assume north is the primary cluster for deployment purp
   {
     "clusername": "south",
     "s3_dir": "south",
-    "primary": false,
     "apiFqdnUrl": "api.south.ps-redis.com",
     "dbFqdnSuffix": "-cluster.south.ps-redis.com",
     "apiPort": 443
@@ -40,7 +44,6 @@ In this example, we will assume north is the primary cluster for deployment purp
   {
     "clusername": "north",
     "s3_dir": "north",
-    "primary": true,
     "apiFqdnUrl": "api.north.ps-redis.com",
     "dbFqdnSuffix": "-cluster.north.ps-redis.com",
     "apiPort": 443
