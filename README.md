@@ -247,18 +247,15 @@ kubectl apply -n argocd -f north-dev-rec-argo.yaml
 kubectl get -n south-dev  po
 ```
 ---
-## Description
+### Description of Rec deployment and the associated CI jobs,
 **This Helm chart installs a Kubernetes Job that configures Redis Enterprise Remote Clusters securely by handling secrets, ACLs, roles, and cross-cluster connection setup.**
 
 **Kubernetes Job (redis-job)**<br>
 - Triggered post-install using Helm hooks.
 
 - Waits for the target Redis Enterprise Cluster API to become available via repeated curl checks.
-
   - Sources two config scripts:
-
   - config-map-acl.sh (ACL/user setup)
-
   - config-map-rec.sh (cluster sync and secret handling)
 
 **ConfigMaps**<br>
