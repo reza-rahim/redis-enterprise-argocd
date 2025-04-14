@@ -3,8 +3,11 @@ kind: RedisEnterpriseDatabase
 metadata:
   name: db1
 spec:
-  memorySize: 100MB
-  databasePort: 12000
+  memorySize: {{ .Values.memorySize }}
+  databasePort: {{ .Values.databasePort }}
+  shardCount: {{ .Values.shardCount }}
+  replication: true
+  tlsMode: enabled
   rolesPermissions:
     - role: "health-check-role"
       acl: "health-check-acl"
