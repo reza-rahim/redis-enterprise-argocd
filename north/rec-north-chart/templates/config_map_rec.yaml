@@ -11,8 +11,6 @@ data:
      export REC_NAME={{ .Values.recname }}
      export NAMESPACE={{ .Values.namespace }}
 
-     kubectl get secret rsa-keys  -o jsonpath="{.data.public_key\.pem}" | base64 -d > /tmp/public_key.pem
-     kubectl get secret rsa-keys  -o jsonpath="{.data.private_key\.pem}" | base64 -d > /tmp/private_key.pem
      
      aws s3 cp s3://$S3_BUCKET/cluster_config.json /tmp/cluster_config.json
 
@@ -21,12 +19,13 @@ data:
   
        if [ "$clusername" = "$CLUSTER_NAME" ]; then
        # Example usage:
-         echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
-         echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/username.bin
-         echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  -out /tmp/passwd.bin
+         echo "clusername: $clusername, s3_dir: $s3_dir"
+         echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  | base64 >  /tmp/username.base64 
+         echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  | base64 > /tmp/passwd.base64 
 
-         aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
-         aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
+         
+         aws s3 cp /tmp/username.base64 s3://$S3_BUCKET/$s3_dir/
+         aws s3 cp /tmp/passwd.base64 s3://$S3_BUCKET/$s3_dir/
        fi
      done
      echo "primary cluester ................"
@@ -38,13 +37,13 @@ data:
         while IFS= read -r item; do
            eval $(echo "$item" | jq -r 'to_entries | map("\(.key)=\(.value|@sh)") | .[]')
 
-           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.bin"
+           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.base64"
 
-           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.bin" > /dev/null 2>&1; then
-              echo "Not found: $s3_dir/username.bin"
+           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.base64" > /dev/null 2>&1; then
+              echo "Not found: $s3_dir/username.base64"
               all_found=false
            else
-             echo " Found: $s3_dir/passwd.bin"
+             echo " Found: $s3_dir/passwd.base64"
            fi
         done < <(jq -c '.[]' /tmp/cluster_config.json)
 
@@ -64,12 +63,15 @@ data:
        # Extract all key-value pairs into shell variables
        eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
 
-       echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
+       echo "clusername: $clusername, s3_dir: $s3_dir, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
 
-       rm -f /tmp/tmp_username.bin /tmp/tmp_passwd.bin
+       rm -f /tmp/tmp_username.* /tmp/tmp_passwd.*
 
-       aws s3 cp "s3://$S3_BUCKET/$s3_dir/username.bin" /tmp/tmp_username.bin
-       aws s3 cp "s3://$S3_BUCKET/$s3_dir/passwd.bin" /tmp/tmp_passwd.bin
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/username.base64" /tmp/tmp_username.base64
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/passwd.base64" /tmp/tmp_passwd.base64
+
+       cat /tmp/tmp_username.base64 | base64 -d > /tmp/tmp_username.bin
+       cat /tmp/tmp_passwd.base64 | base64 -d > /tmp/tmp_passwd.bin
 
        export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin)
        export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin)
@@ -96,5 +98,4 @@ data:
      EOF
 
      done
-     rm -f /tmp/public_key.pem
-     rm -f /tmp/private_key.pem
+ 
