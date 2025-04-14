@@ -291,3 +291,9 @@ Then:
 
 ---
 
+### Deploy a single region Database  
+
+```
+kubectl
+```
+
