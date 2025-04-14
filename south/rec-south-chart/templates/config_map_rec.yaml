@@ -82,7 +82,7 @@ data:
         --from-literal=password="$PASSWD"
 
         kubectl apply RedisEnterpriseRemoteCluster ${clusername}
-        kubectl apply -f - <<EOF
+        kubectl delete -f - <<EOF
         apiVersion: app.redislabs.com/v1alpha1
         kind: RedisEnterpriseRemoteCluster
         metadata:
