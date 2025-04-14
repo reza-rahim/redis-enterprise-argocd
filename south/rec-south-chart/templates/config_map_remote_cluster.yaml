@@ -3,11 +3,11 @@ kind: ConfigMap
 metadata:
   name: config-map-remote-cluster
 data:
-  config-map-remote-cluster.sh |
+  config-map-remote-cluster.sh: |
     apiVersion: app.redislabs.com/v1alpha1
     kind: RedisEnterpriseRemoteCluster
     metadata:
-       name: $(NAME)
+      name: $(NAME)
     spec:
       recName: $(RECNAME)
       apiFqdnUrl: $(API)
