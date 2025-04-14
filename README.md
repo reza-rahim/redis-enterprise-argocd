@@ -261,7 +261,7 @@ kubectl get -n south-dev  po
 
   - config-map-rec.sh (cluster sync and secret handling)
 
-2.ConfigMaps
+2. ConfigMaps<br>
 A. config-map-acl.sh
 - Uses the Redis Enterprise API to:
   - Create an ACL
