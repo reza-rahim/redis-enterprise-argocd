@@ -1,0 +1,14 @@
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseDatabase
+metadata:
+  name: db1
+spec:
+  memorySize: 100MB
+  databasePort: 12000
+  rolesPermissions:
+    - role: "health-check-role"
+      acl: "health-check-acl"
+      type: "redis-enterprise"
+    - role: "full-access-role"
+      acl: "Full Access"
+      type: "redis-enterprise"
