@@ -19,7 +19,7 @@ data:
   
        if [ "$clusername" = "$CLUSTER_NAME" ]; then
        # Example usage:
-         echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
+         echo "clusername: $clusername, s3_dir: $s3_dir"
          echo $REC_USERNAME | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  | base64 >  /tmp/username.base64 
          echo $REC_PASSWORD | openssl pkeyutl  -encrypt -inkey /tmp/public_key.pem -pubin  | base64 > /tmp/passwd.base64 
 
@@ -37,10 +37,10 @@ data:
         while IFS= read -r item; do
            eval $(echo "$item" | jq -r 'to_entries | map("\(.key)=\(.value|@sh)") | .[]')
 
-           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.bin"
+           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.base64"
 
-           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.bin" > /dev/null 2>&1; then
-              echo "Not found: $s3_dir/username.bin"
+           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.base64" > /dev/null 2>&1; then
+              echo "Not found: $s3_dir/username.base64"
               all_found=false
            else
              echo " Found: $s3_dir/passwd.base64"
@@ -63,7 +63,7 @@ data:
        # Extract all key-value pairs into shell variables
        eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
 
-       echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
+       echo "clusername: $clusername, s3_dir: $s3_dir, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
 
        rm -f /tmp/tmp_username.* /tmp/tmp_passwd.*
 
