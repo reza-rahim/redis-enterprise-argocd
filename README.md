@@ -83,7 +83,7 @@ kubectl create secret generic rsa-keys -n <namespace> \
 
 ```
 kubectl create secret generic health-check-user -n  $NSP \
-  --from-literal=username=health-check-user@example.com \
+  --from-literal=username=health-check-user \
   --from-literal=password=<password>
 ```
 
