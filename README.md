@@ -250,7 +250,7 @@ kubectl get -n south-dev  po
 ### Description of Rec deployment and the associated CI jobs,
 **This Helm chart installs a Kubernetes Job that configures Redis Enterprise Remote Clusters securely by handling secrets, ACLs, roles, and cross-cluster connection setup.**
 
-**Kubernetes Job (redis-job)**<br>
+**Kubernetes Job ([redis-job](north/rec-north-chart/templates/redis-posthook-pod.yaml))**<br>
 - Triggered post-install using Helm hooks.
 
 - Waits for the target Redis Enterprise Cluster API to become available via repeated curl checks.
