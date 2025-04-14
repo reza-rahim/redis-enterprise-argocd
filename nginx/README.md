@@ -1,7 +1,8 @@
 
 ### Nginx
 
-https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke
+https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke <br>
+Edit nginx-ingress-controller deployment, to include "--enable-ssl-passthrough" flag or patch with kubectl:
 
 ```
 kubectl create ns ingress-nginx
