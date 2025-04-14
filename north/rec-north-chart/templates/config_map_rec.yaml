@@ -9,9 +9,10 @@ data:
      export CLUSTER_NAME={{ .Values.clusterName  }}
      export ENVIRONMENT={{ .Values.environment  }}
      export REC_NAME={{ .Values.recname }}
+     export NAMESPACE={{ .Values.namespace }}
 
-     kubectl get secret rsa-keys -o jsonpath="{.data.public_key\.pem}" | base64 -d > /tmp/public_key.pem
-     kubectl get secret rsa-keys -o jsonpath="{.data.private_key\.pem}" | base64 -d > /tmp/private_key.pem
+     kubectl get secret rsa-keys  -o jsonpath="{.data.public_key\.pem}" | base64 -d > /tmp/public_key.pem
+     kubectl get secret rsa-keys  -o jsonpath="{.data.private_key\.pem}" | base64 -d > /tmp/private_key.pem
      
      aws s3 cp s3://$S3_BUCKET/cluster_config.json /tmp/cluster_config.json
 
@@ -26,11 +27,74 @@ data:
 
          aws s3 cp /tmp/username.bin s3://$S3_BUCKET/$s3_dir/
          aws s3 cp /tmp/passwd.bin s3://$S3_BUCKET/$s3_dir/
-          if [ "$primary" = "false" ]; then
-             exit
-          fi
        fi
      done
+     echo "primary cluester ................"
+     #it's primary cluster
+     while true; do
+        all_found=true
 
+        # Loop over each cluster item in the JSON
+        while IFS= read -r item; do
+           eval $(echo "$item" | jq -r 'to_entries | map("\(.key)=\(.value|@sh)") | .[]')
+
+           echo "Checking: s3://$S3_BUCKET/$s3_dir/passwd.bin"
+
+           if ! aws s3 ls "s3://$S3_BUCKET/$s3_dir/passwd.bin" > /dev/null 2>&1; then
+              echo "Not found: $s3_dir/username.bin"
+              all_found=false
+           else
+             echo " Found: $s3_dir/passwd.bin"
+           fi
+        done < <(jq -c '.[]' /tmp/cluster_config.json)
+
+        # Exit only if all files were found
+        if [ "$all_found" = true ]; then
+          echo "All required S3 files are present!"
+          break
+        fi
+     
+        echo " Some files not ready yet, retrying in 5 seconds..."
+        sleep 30
+     done
+     
+     sleep 10
+     
+     jq -c '.[]' /tmp/cluster_config.json | while read -r item; do
+       # Extract all key-value pairs into shell variables
+       eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
+
+       echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
+
+       rm -f /tmp/tmp_username.bin /tmp/tmp_passwd.bin
+
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/username.bin" /tmp/tmp_username.bin
+       aws s3 cp "s3://$S3_BUCKET/$s3_dir/passwd.bin" /tmp/tmp_passwd.bin
+
+       export USERNAME=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_username.bin)
+       export PASSWD=$(openssl pkeyutl -decrypt -inkey /tmp/private_key.pem -in /tmp/tmp_passwd.bin)
+
+       kubectl delete secret "$clusername" --ignore-not-found
+       kubectl create secret generic "$clusername" \
+         --from-literal=username="$USERNAME" \
+         --from-literal=password="$PASSWD"
+
+       kubectl delete RedisEnterpriseRemoteCluster "$clusername" --ignore-not-found
+      
+       kubectl apply -f - <<EOF
+     apiVersion: app.redislabs.com/v1alpha1
+     kind: RedisEnterpriseRemoteCluster
+     metadata:
+      name: ${clusername}
+     spec:
+       recName: ${REC_NAME}
+       recNamespace: ${NAMESPACE}
+       apiFqdnUrl: ${apiFqdnUrl}
+       dbFqdnSuffix: ${dbFqdnSuffix}
+       apiPort: ${apiPort}
+       secretName: ${clusername}
+     EOF
+
+     done
      rm -f /tmp/public_key.pem
      rm -f /tmp/private_key.pem
