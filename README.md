@@ -247,6 +247,9 @@ kubectl apply -n argocd -f north-dev-rec-argo.yaml
 kubectl get -n south-dev  po
 ```
 ---
+## Description
+**This Helm chart installs a Kubernetes Job that configures Redis Enterprise Remote Clusters securely by handling secrets, ACLs, roles, and cross-cluster connection setup.**
+
 1. Kubernetes Job (redis-job)
 - Triggered post-install using Helm hooks.
 
@@ -257,3 +260,24 @@ kubectl get -n south-dev  po
   - config-map-acl.sh (ACL/user setup)
 
   - config-map-rec.sh (cluster sync and secret handling)
+
+2.ConfigMaps
+A. config-map-acl.sh
+- Uses the Redis Enterprise API to:
+  - Create an ACL
+  - Create a role (health-check-role)
+  - Create a user with specific credentials and assign the role
+
+B. config-map-rec.sh
+- Sets environment-specific variables using Helm values.
+- Downloads a cluster_config.json file from S3 containing configuration for all clusters.
+- For the primary cluster:
+  - Encrypts and uploads its credentials to S3 using RSA keys.
+
+Then:
+
+- Waits until all clusters’ credentials are uploaded to S3.
+- For each cluster:
+  - Decrypts credentials from S3
+  - Creates Kubernetes secrets
+  - Applies a RedisEnterpriseRemoteCluster resource to establish connectivity
