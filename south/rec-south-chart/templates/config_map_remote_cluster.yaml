@@ -4,13 +4,4 @@ metadata:
   name: config-map-remote-cluster
 data:
   config-map-remote-cluster.sh: |
-    apiVersion: app.redislabs.com/v1alpha1
-    kind: RedisEnterpriseRemoteCluster
-    metadata:
-      name: $(NAME)
-    spec:
-      recName: $(RECNAME)
-      apiFqdnUrl: $(API)
-      dbFqdnSuffix: $(DB)
-      apiPort: $(PORT)
-      secretName: $(NAME)
+    test
