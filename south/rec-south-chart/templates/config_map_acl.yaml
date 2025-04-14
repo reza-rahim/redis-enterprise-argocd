@@ -28,3 +28,19 @@ data:
     -d "{\"email\": \"health-check-user@example.com\", \"password\": \"$HEATHCHECK_PASSWORD\", \"name\": \"$HEATHCHECK_USERNAME\", \"role_uids\": [2], \"auth_method\": \"regular\"}" \
     "https://{{ .Values.recname }}:9443/v1/users"
 
+    
+    read -r -d '' payload <<EOF
+    {
+      "email": "user@example.com",
+      "password": "$USER_PASSWORD",
+      "name": "user",
+      "role_uids": [3],
+      "auth_method": "regular"
+    }
+    EOF
+
+    curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
+     -H "Content-Type: application/json" \
+     -d "$payload" \
+     "https://{{ .Values.recname }}:9443/v1/users"
+
