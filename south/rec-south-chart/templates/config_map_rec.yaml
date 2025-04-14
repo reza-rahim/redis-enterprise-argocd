@@ -67,7 +67,7 @@ data:
         eval $(echo "$item" | jq -r 'to_entries|map("\(.key)=\(.value|@sh)")|.[]')
 
         # Example usage:
-        echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary"
+        echo "clusername: $clusername, s3_dir: $s3_dir, primary: $primary, apiFqdnUrl: $apiFqdnUrl, dbFqdnSuffix: $dbFqdnSuffix, apiPort: $apiPort"
         rm -f /tmp/tmp_username.bin /tmp/tmp_passwd.bin
         aws s3 cp  s3://$S3_BUCKET/$s3_dir/username.bin /tmp/tmp_username.bin
         aws s3 cp  s3://$S3_BUCKET/$s3_dir/passwd.bin /tmp/tmp_passwd.bin
