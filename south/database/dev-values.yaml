@@ -1,1 +1,3 @@
-
+memorySize: 100MB
+databasePort: 13000
+shardCount: 2
