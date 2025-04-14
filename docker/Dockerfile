@@ -14,7 +14,7 @@ RUN apk add --no-cache \
 # Create a virtualenv and install tools in it
 RUN python3 -m venv /opt/venv \
  && . /opt/venv/bin/activate \
- && pip install awscli redis
+ && pip install awscli redis flask
 
 
 # Set PATH so commands like aws and python work globally
