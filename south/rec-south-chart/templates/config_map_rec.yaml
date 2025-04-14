@@ -86,18 +86,18 @@ data:
        kubectl delete RedisEnterpriseRemoteCluster "$clusername" --ignore-not-found
       
        kubectl apply -f - <<EOF
-       apiVersion: app.redislabs.com/v1alpha1
-       kind: RedisEnterpriseRemoteCluster
-       metadata:
-         name: ${clusername}
-       spec:
-         recName: ${REC_NAME}
-         recNamespace: ${NAMESPACE}
-         apiFqdnUrl: ${apiFqdnUrl}
-         dbFqdnSuffix: ${dbFqdnSuffix}
-         apiPort: ${apiPort}
-         secretName: ${clusername}
-       EOF
+     apiVersion: app.redislabs.com/v1alpha1
+     kind: RedisEnterpriseRemoteCluster
+     metadata:
+      name: ${clusername}
+     spec:
+       recName: ${REC_NAME}
+       recNamespace: ${NAMESPACE}
+       apiFqdnUrl: ${apiFqdnUrl}
+       dbFqdnSuffix: ${dbFqdnSuffix}
+       apiPort: ${apiPort}
+       secretName: ${clusername}
+     EOF
 
      done
      rm -f /tmp/public_key.pem
