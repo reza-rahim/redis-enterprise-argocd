@@ -1,4 +1,4 @@
-s3RecBucket: redis-argocd-bank/pod
+s3RecBucket: redis-argocd-bank/prod
 clusterName: south
 env: prod
 recname: south-prod-rec
