@@ -9,7 +9,7 @@ data:
     metadata:
        name: $(NAME)
     spec:
-      recName: $R(ECNAME)
+      recName: $(RECNAME)
       apiFqdnUrl: $(API)
       dbFqdnSuffix: $(DB)
       apiPort: $(PORT)
