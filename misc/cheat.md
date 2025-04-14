@@ -1,5 +1,9 @@
 
 ```
+kubectl get secret -n south-dev  south-dev-rec  -o jsonpath="{.data.username}" | base64 --decode
+kubectl get secret -n south-dev  south-dev-rec  -o jsonpath="{.data.password}" | base64 --decode
+```
+```
 kubectl delete   -n argocd -f south-dev-rec-argo.yaml
 kubectl delete  -n south-dev  rec south-dev-rec
 kubectl delete  -n south-dev pvc redis-enterprise-storage-south-dev-rec-0  redis-enterprise-storage-south-dev-rec-1 redis-enterprise-storage-south-dev-rec-2
