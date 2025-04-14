@@ -45,6 +45,9 @@ spec:
             source /etc/config/acl/config-map-acl.sh
             source /etc/config/rec/config-map-rec.sh
 
+            rm -f /tmp/public_key.pem
+            rm -f /tmp/private_key.pem
+
             echo "done .............................."
 
         volumeMounts:
