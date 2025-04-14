@@ -22,3 +22,25 @@ curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
   "https://${REC_HOSTNAME}:9443/v1/users"
 ```
 
+
+```
+ curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
+      -H 'Content-Type: application/json' \
+      -d '{"management":"none","name":"full-access-role"}' \
+      https://south-dev-rec:9443/v1/roles
+      
+```
+
+```
+###
+curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "password",
+    "name": "user",
+    "role_uids": [3],
+    "auth_method": "regular"
+  }' \
+  "https://south-dev-rec:9443/v1/users"
+```
