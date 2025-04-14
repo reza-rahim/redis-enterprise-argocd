@@ -15,7 +15,13 @@ data:
       -H 'Content-Type: application/json' \
       -d '{"management":"none","name":"health-check-role"}' \
       https://{{ .Values.recname }}:9443/v1/roles
-
+    
+    #   
+    curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
+      -H 'Content-Type: application/json' \
+      -d '{"management":"none","name":"full-access-role"}' \
+      https://{{ .Values.recname }}:9443/v1/roles
+      
     # Create user
     curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
