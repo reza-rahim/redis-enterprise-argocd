@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/reza-rahim/redis-enterprise-argocd/  # Replace with your Git repository
     targetRevision: main         # Branch, tag, or commit SHA to deploy
-    path: south/db1-chart-chart  # Path to the directory containing Kubernetes YAMLs
+    path: south/db1-chart  # Path to the directory containing Kubernetes YAMLs
     helm:
       valueFiles:
       - dev-values.yaml
