@@ -1,2 +1,5 @@
+s3RecBucket: redis-argocd-bank/pod
+clusterName: south
 env: prod
 recname: south-prod-rec
+namespace: south-prod
