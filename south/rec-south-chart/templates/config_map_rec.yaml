@@ -80,6 +80,20 @@ data:
         kubectl create secret generic $clusername\
         --from-literal=username="$USERNAME" \
         --from-literal=password="$PASSWD"
+
+        kubectl apply RedisEnterpriseRemoteCluster ${clusername}
+        kubectl apply -f - <<EOF
+        apiVersion: app.redislabs.com/v1alpha1
+        kind: RedisEnterpriseRemoteCluster
+        metadata:
+          name: ${clusername}
+        spec:
+          recName: ${REC_NAME}
+          apiFqdnUrl: ${apiFqdnUrl}
+          dbFqdnSuffix: ${dbFqdnSuffix}
+          apiPort: ${dbFqdnSuffix}
+          secretName: ${apiPort}
+        EOF
      done
 
      rm -f /tmp/public_key.pem
