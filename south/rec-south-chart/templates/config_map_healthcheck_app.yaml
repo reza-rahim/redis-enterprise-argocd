@@ -47,11 +47,8 @@ data:
             results = {}
             for i in range(10):
                 key = f"xxxxxxx{i}"
-                try:
-                    results[key] = r.get(key)
-                except Exception as ke:
-                    results[key] = f"ERROR: {ke}"
-
+                results[key] = r.get(key)
+                
             return jsonify({'status': 'ok', 'results': results})
 
         except Exception as e:
