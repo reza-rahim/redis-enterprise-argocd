@@ -323,7 +323,8 @@ http://health-check:5000/probe?host=db1&port=13000&tls=true
 
 ### Deploy a single region Database  
 
+
 ```
-kubectl
+kubectl apply -f south-dev-db1-argo.yaml
 ```
 
