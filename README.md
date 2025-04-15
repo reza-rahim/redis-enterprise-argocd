@@ -289,9 +289,33 @@ Then:
 - Uses Helm values to support multiple environments (dev, test, prod).
 - Each environment can have its own cluster_config.json.
 
+---
 
-Health check URL
+### Database Health check
+
+Health Check a Flask-based Redis health check web app in a Kubernetes cluster. It exposes a /probe endpoint that checks Redis connectivity and key availability with optional TLS.<br>
+The goal is to provide a flexible, parameterized HTTP endpoint (/probe) that can be used to probe Redis clusters securely or insecurely, supporting custom host/port settings and returning health status.
+**Key Components**
+
+1. ConfigMap (flask-redis-app)
+   - Stores a Flask app (app.py) that:
+     - Reads Redis connection parameters (host, port, tls) from URL query params.
+     - Fetches Redis username/password from environment variables.
+     - Connects to Redis, skipping TLS verification if needed (ssl_cert_reqs="none").
+     - Queries 10 keys (xxxxxxx0 to xxxxxxx9) and returns 200 OK or 500 Error.
+2. Service (health-check)
+   - Exposes the Flask app internally on port 5000 using ClusterIP.
+
+3. Deployment (health-check)
+   - Deploys 1 pod using the image rezarahim/alpine-tool:1.2.
+     - Runs the Flask app from the mounted ConfigMap at /etc/config/health/app.py.
+     - Uses environment variables for Redis credentials from the Kubernetes Secret named health-check-user.
+     - Mounts the Flask app via a volume referencing the flask-redis-app ConfigMap.
+
 ```
+#host is service or db name
+#database port
+#Database is tls enable or not 
 http://health-check:5000/probe?host=db1&port=13000&tls=true
 ```
 
