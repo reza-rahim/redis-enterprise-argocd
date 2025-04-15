@@ -28,6 +28,12 @@ data:
     -d "{\"email\": \"health-check-user@example.com\", \"password\": \"$HEATHCHECK_PASSWORD\", \"name\": \"$HEATHCHECK_USERNAME\", \"role_uids\": [2], \"auth_method\": \"regular\"}" \
     "https://{{ .Values.recname }}:9443/v1/users"
 
+    # Encrypt the password and encode with base64
+    #echo "password" | openssl pkeyutl  -encrypt -inkey public_key.pem -pubin  | base64 
+    
+    export ENCRYPTED_PASSWORD="bJd6H3hk8xfhTp5MCzxoH6GVw06ubUqTlsNdjxX8ExoasrwmQLYwuDcnAXPE7x4zC3Uwp3w3/OvhdJwIwL1rJ9RPh2K6/QzieXW6cRaYmyUD4uw3+Fcw56mG8+loiEbeWurITBJPt/YIGS5COUBoZq7yU+9ILHEh7wDqhDvYFarFymjASHT3Ml73326kJcl+TiqtEWgZ0QBPoOtZlYzS2ISutdD4ryymmE3mi4BQZJ38MSsIsdZ6ju1ZilkFXNmiZnx2EL2qvuPz91vBnbzwuHernU4O2OtdL4HFVhcvqf7mEF2K+Xq0E3lHJuWkAsZFPe9AHB/vrqbG4abzvKeBjg=="
+
+    export USER_PASSWORD=$(echo "$ENCRYPTED_PASSWORD" | base64 -d | openssl pkeyutl -decrypt -inkey /tmp/private_key.pem)
     
     read -r -d '' payload <<EOF
     {
