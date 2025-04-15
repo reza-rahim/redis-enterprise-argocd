@@ -328,3 +328,24 @@ http://health-check:5000/probe?host=db1&port=13000&tls=true
 kubectl apply -f south-dev-db1-argo.yaml
 ```
 
+The example database will be created with two roles `health-check-role` and `full-access-role`  south-dev-db1-argo.yaml
+```
+apiVersion: app.redislabs.com/v1alpha1
+kind: RedisEnterpriseDatabase
+metadata:
+  name: db1
+spec:
+  memorySize: {{ .Values.memorySize }}
+  databasePort: {{ .Values.databasePort }}
+  shardCount: {{ .Values.shardCount }}
+  replication: true
+  tlsMode: enabled
+  rolesPermissions:
+    - role: "health-check-role"
+      acl: "health-check-acl"
+      type: "redis-enterprise"
+    - role: "full-access-role"
+      acl: "Full Access"
+      type: "redis-enterprise"
+```
+
