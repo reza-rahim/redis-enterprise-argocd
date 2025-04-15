@@ -255,8 +255,8 @@ kubectl get -n south-dev  po
 
 - Waits for the target Redis Enterprise Cluster API to become available via repeated curl checks.
   - Sources two config scripts:
-  - config-map-acl.sh (ACL/user setup)
-  - config-map-rec.sh (cluster sync and secret handling)
+  - [config-map-acl.sh](north/rec-north-chart/templates/config_map_acl.yaml) (ACL/user setup)
+  - [config-map-rec.sh](north/rec-north-chart/templates/config_map_rec.yaml) (cluster sync and secret handling)
 
 **ConfigMaps**<br>
 
