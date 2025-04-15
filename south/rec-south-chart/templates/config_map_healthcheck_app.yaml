@@ -27,28 +27,28 @@ data:
             return jsonify({'error': 'Missing Redis credentials in environment'}), 500
 
         try:
-            connection_kwargs = {
-                'host': host,
-                'port': port,
-                'username': redis_username,
-                'password': redis_password,
-                'decode_responses': True
-            }
-
             if tls:
-                ssl_context = ssl.create_default_context()
-                ssl_context.check_hostname = False
-                ssl_context.verify_mode = ssl.CERT_NONE
-                connection_kwargs['ssl'] = True
-                connection_kwargs['ssl_context'] = ssl_context
-
-            r = redis.Redis(**connection_kwargs)
+                r = redis.Redis(
+                    host=host,
+                    port=port,
+                    username=redis_username,
+                    password=redis_password,
+                    ssl=True,
+                    ssl_cert_reqs="none"  # Skip certificate verification
+                )
+            else:
+                r = redis.Redis(
+                    host=host,
+                    port=port,
+                    username=redis_username,
+                    password=redis_password,
+                )
 
             results = {}
             for i in range(10):
                 key = f"xxxxxxx{i}"
                 results[key] = r.get(key)
-                
+
             return jsonify({'status': 'ok', 'results': results}), 200
 
         except Exception as e:
