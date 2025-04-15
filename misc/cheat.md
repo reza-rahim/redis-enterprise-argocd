@@ -5,10 +5,23 @@ echo
 kubectl get secret -n south-dev  south-dev-rec  -o jsonpath="{.data.password}" | base64 --decode
 echo
 ```
+
+```
+kubectl delete   -n argocd -f north-dev-rec-argo.yaml
+kubectl delete  -n north-dev  rec north-dev-rec --grace-period=0 --force
+kubectl delete  -n north-dev pvc redis-enterprise-storage-north-dev-rec-0  redis-enterprise-storage-north-dev-rec-1 redis-enterprise-storage-north-dev-rec-2
+kubectl delete  -n north-dev job redis-job    
+kubectl delete  -n north-dev deploy health-check
+```
+
 ```
 kubectl delete   -n argocd -f south-dev-rec-argo.yaml
-kubectl delete  -n south-dev  rec south-dev-rec
+kubectl delete  -n south-dev  rec south-dev-rec --grace-period=0 --force
+#kubectl patch -n south-dev  rec/south-dev-rec --type=merge -p '{"metadata": {"finalizers":null}}'
 kubectl delete  -n south-dev pvc redis-enterprise-storage-south-dev-rec-0  redis-enterprise-storage-south-dev-rec-1 redis-enterprise-storage-south-dev-rec-2
+kubectl delete  -n south-dev job redis-job    
+kubectl delete  -n south-dev deploy health-check
+kubectl delete -f south-dev-db1-argo.yaml
 
 ```
 ```
