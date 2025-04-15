@@ -47,12 +47,13 @@ data:
             results = {}
             for i in range(10):
                 key = f"xxxxxxx{i}"
-                results[key] = r.get(key)
+                r.get(key)
 
-            return jsonify({'status': 'ok', 'results': results}), 200
+            return Response(status=200)
 
         except Exception as e:
-            return jsonify({'status': 'error', 'message': str(e)}), 500
+            print(e)
+            return Response(f"Redis error: {e}", status=500)
 
     if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000)
