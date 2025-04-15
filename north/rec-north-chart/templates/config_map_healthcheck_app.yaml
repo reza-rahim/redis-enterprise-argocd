@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-redis-app
+data:
+  app.py: |
+    from flask import Flask, request, jsonify
+    import redis
+    import ssl
+    import os
+
+    app = Flask(__name__)
+
+    @app.route('/probe')
+    def probe():
+        host = request.args.get('host')
+        port = request.args.get('port', type=int, default=6379)
+        tls = request.args.get('tls', 'false').lower() == 'true'
+
+        if not host:
+            return jsonify({'error': 'Missing required parameter: host'}), 400
+
+        redis_username = os.getenv('HEATHCHECK_USERNAME')
+        redis_password = os.getenv('HEATHCHECK_PASSWORD')
+
+        if not redis_username or not redis_password:
+            return jsonify({'error': 'Missing Redis credentials in environment'}), 500
+
+        try:
+            if tls:
+                r = redis.Redis(
+                    host=host,
+                    port=port,
+                    username=redis_username,
+                    password=redis_password,
+                    ssl=True,
+                    ssl_cert_reqs="none"  # Skip certificate verification
+                )
+            else:
+                r = redis.Redis(
+                    host=host,
+                    port=port,
+                    username=redis_username,
+                    password=redis_password,
+                )
+
+            results = {}
+            for i in range(10):
+                key = f"xxxxxxx{i}"
+                r.get(key)
+
+            return Response(status=200)
+
+        except Exception as e:
+            print(e)
+            return Response(f"Redis error: {e}", status=500)
+
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port=5000)
