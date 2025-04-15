@@ -7,7 +7,7 @@ data:
     # Create an ACL for key prefix abc
     curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
       -H 'Content-Type: application/json' \
-      -d '{ "name": "health-check-acl", "acl": "~xxxxx" }' \
+      -d '{ "name": "health-check-acl", "acl": "~xxxxxxx* +get" }' \
       https://{{ .Values.recname }}:9443/v1/redis_acls
 
     # Create abc-role role_uids=2
