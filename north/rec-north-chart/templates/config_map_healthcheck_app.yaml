@@ -4,7 +4,7 @@ metadata:
   name: flask-redis-app
 data:
   app.py: |
-    from flask import Flask, request, jsonify
+    from flask import Flask, request, jsonify, Response
     import redis
     import ssl
     import os
