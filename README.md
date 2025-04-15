@@ -328,9 +328,9 @@ http://health-check:5000/probe?host=db1&port=13000&tls=true
 kubectl apply -f south-dev-db1-argo.yaml
 ```
 
-The example database **db1** will be created with two roles 
-- Role: `health-check-role`, DB User `health-check-user`
-- Role: `full-access-role`, DB User `user`  
+The example database **db1** will be created with two Users  
+- Role: DB User `health-check-user`, `health-check-role`
+- Role: DB User `user`, `full-access-role` 
 
 <br>[south-dev-db1-argo.yaml](south/db1-chart/templates/db1.yaml)
 
