@@ -14,4 +14,20 @@ kubectl delete -n south-dev po redis-pod
 
 ```
 
+```
+
+read -r -d '' payload <<EOF
+{
+   "username": "user",
+   "old_password": "password",
+   "new_password": "password1"
+}
+EOF
+
+curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X PUT \
+     -H "Content-Type: application/json" \
+     -d "$payload" \
+     "https://south-dev-rec:9443/v1/users/password"
+
+```
 
