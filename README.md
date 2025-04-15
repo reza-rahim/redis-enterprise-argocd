@@ -353,3 +353,12 @@ spec:
 ```
 
 <img src="images/db1.png" width="800">
+
+<br>
+
+**Accessing the database db1**
+```
+redis-cli -h db1.south-dev -p 13000 --tls --insecure 
+auth user password
+```
+
