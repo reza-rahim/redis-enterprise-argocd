@@ -289,6 +289,12 @@ Then:
 - Uses Helm values to support multiple environments (dev, test, prod).
 - Each environment can have its own cluster_config.json.
 
+
+Health check URL
+```
+http://health-check:5000/probe?host=db1&port=13000&tls=true
+```
+
 ---
 
 ### Deploy a single region Database  
