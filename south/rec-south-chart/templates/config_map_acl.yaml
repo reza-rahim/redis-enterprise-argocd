@@ -37,13 +37,11 @@ data:
     
     read -r -d '' payload <<EOF
     {
-      "export_location":{
-        "email": "user@example.com",
-        "password": "$USER_PASSWORD",
-        "name": "user",
-        "role_uids": [3],
-        "auth_method": "regular"
-      } 
+      "email": "user@example.com",
+      "password": "$USER_PASSWORD",
+      "name": "user",
+      "role_uids": [3],
+      "auth_method": "regular" 
     }
     EOF
 
