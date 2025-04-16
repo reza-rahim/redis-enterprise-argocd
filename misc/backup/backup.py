@@ -1,3 +1,6 @@
+#
+# sudo -u redislabs python3 backup.py
+# 
 import requests
 from requests.auth import HTTPBasicAuth
 import urllib3
