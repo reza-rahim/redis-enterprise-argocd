@@ -12,7 +12,7 @@ cat redis_commands.txt | redis-cli -h db1 -p 13000 --tls --insecure --user user 
 
 ```
 
-### S3 backup and recovery 
+### S3 backup 
 ```
 read -r -d '' payload <<EOF
 {
@@ -33,6 +33,7 @@ curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
 
 ```
 
+## recovery 
 ```
 {
     "type": "s3",
@@ -42,4 +43,10 @@ curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
     "access_key_id": aws_access_key_id,
     "secret_access_key": aws_secret_access_key
 }
+
+https://{hostname}:{port}/v1/bdbs/{uid}/actions/import",
+                    auth=auth,
+                    headers={"Content-Type": "application/json"},
+                    json=data,
+                    verify=False
 ```
