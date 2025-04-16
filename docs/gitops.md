@@ -20,7 +20,7 @@
 
 ### Visual:
 
-   
+   <img src="images/argoCD.png" width="800">
 
 <br>**links** 
 - [What Is Argo CD?](https://argo-cd.readthedocs.io/en/stable/)
