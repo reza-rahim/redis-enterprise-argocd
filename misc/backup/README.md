@@ -8,7 +8,7 @@ for i in {1..1000}; do
   echo "SET key:$i $VALUE"
 done > redis_commands.txt
 
-redis-cli -h db1 -p 13000 --tls --insecure --user user --pass password
+cat redis_commands.txt | redis-cli -h db1 -p 13000 --tls --insecure --user user --pass password
 
 ```
 
