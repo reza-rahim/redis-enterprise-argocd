@@ -50,3 +50,11 @@ https://{hostname}:{port}/v1/bdbs/{uid}/actions/import",
                     json=data,
                     verify=False
 ```
+
+```
+Example Directory Structure After Export
+/tmp/backup/
+└── mydb/
+    └── 20250416T160230/
+        └── (backup files here)
+```
