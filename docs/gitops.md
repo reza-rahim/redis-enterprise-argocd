@@ -18,3 +18,22 @@
 - Helm (optional)
 - Kustomize (optional)
 
+### Visual:
+
+   ┌────────────┐       Push Config        ┌─────────────┐
+   │ Developer  │ ───────────────────────▶ │   Git Repo  │
+   └────────────┘                         └─────────────┘
+                                                │
+                                                ▼
+                                         ┌──────────────┐
+                                         │ GitOps Tool  │◀─┐
+                                         │ (e.g., Argo) │  │
+                                         └────┬─────────┘  │
+                                              │ Sync       │
+                                              ▼            │
+                                         ┌──────────────┐  │
+                                         │ Kubernetes   │──┘
+                                         │ Cluster      │
+                                         └──────────────┘
+
+
