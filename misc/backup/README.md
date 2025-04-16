@@ -1,4 +1,17 @@
 
+### add some fake data
+```
+export KB=4096 #4KB
+
+for i in {1..1000}; do
+  VALUE=$(head -c $KB </dev/urandom | base64 | tr -d '\n' | head -c $KB)
+  echo "SET key:$i $VALUE"
+done > redis_commands.txt
+
+redis-cli -h db1 -p 13000 --tls --insecure --user user --pass password
+
+```
+
 ### S3 backup and recovery 
 ```
 {
