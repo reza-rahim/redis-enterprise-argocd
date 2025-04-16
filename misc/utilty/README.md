@@ -31,5 +31,12 @@ curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X PUT \
      -d "$payload" \
      "https://south-dev-rec:9443/v1/users/password"
 
+read -r -d '' payload <<EOF
+{
+   "username": "user",
+   "old_password": "password1",
+   "new_password": "password"
+}
+EOF
 ```
 
