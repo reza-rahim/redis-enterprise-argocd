@@ -8,6 +8,7 @@ spec:
   shardCount: {{ .Values.shardCount }}
   replication: true
   tlsMode: enabled
+  defaultUser: false
   rolesPermissions:
     - role: "health-check-role"
       acl: "health-check-acl"
