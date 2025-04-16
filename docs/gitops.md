@@ -22,7 +22,7 @@
 
    
 
-<br>links 
+<br>**links** 
 - [Solving configuration drift using GitOps with Argo CD](https://www.cncf.io/blog/2020/12/17/solving-configuration-drift-using-gitops-with-argo-cd/)
 
 
