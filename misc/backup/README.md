@@ -16,11 +16,13 @@ cat redis_commands.txt | redis-cli -h db1 -p 13000 --tls --insecure --user user 
 ```
 read -r -d '' payload <<EOF
 {
-   "type": "s3",
-   "bucket_name": "redis-argocd-bank",
-   "subdir": "backup/11",
-   "access_key_id": "$AWS_ACCESS_KEY_ID",
-   "secret_access_key": "$AWS_SECRET_ACCESS_KEY"
+   "export_location": {
+     "type": "s3",
+     "bucket_name": "redis-argocd-bank",
+     "subdir": "backup/11",
+     "access_key_id": "$AWS_ACCESS_KEY_ID",
+     "secret_access_key": "$AWS_SECRET_ACCESS_KEY"
+  }
 }
 EOF
 
