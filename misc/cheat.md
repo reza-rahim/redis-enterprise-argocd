@@ -32,6 +32,7 @@ read -r -d '' payload <<EOF
     "old_password": "password",
     "new_password": "password1"
 }
+EOF
 
 curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X PUT \
 -H "Content-Type: application/json" \
