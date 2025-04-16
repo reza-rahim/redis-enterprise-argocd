@@ -1,0 +1,1 @@
+clname:test,port:9443,host:localhost,cluser:demo@redis.com,clpass:dGVzdAo=,cldesc:test,backup_location:/tmp/backup
