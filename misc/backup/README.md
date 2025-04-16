@@ -19,8 +19,8 @@ read -r -d '' payload <<EOF
    "type": "s3",
    "bucket_name": "redis-argocd-bank",
    "subdir": "backup/11",
-   "access_key_id": $AWS_ACCESS_KEY_ID,
-   "secret_access_key": $AWS_SECRET_ACCESS_KEY
+   "access_key_id": "$AWS_ACCESS_KEY_ID",
+   "secret_access_key": "$AWS_SECRET_ACCESS_KEY"
 }
 EOF
 
