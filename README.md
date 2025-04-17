@@ -81,6 +81,8 @@ kubectl create secret generic rsa-keys -n <namespace> \
   --from-file=public_key.pem
 ```
 
+**This is inspired by ["Sealed Secrets" for Kubernetes project](https://github.com/bitnami-labs/sealed-secrets)**
+
 ### 5. Create username and password for health check upser
 
 
