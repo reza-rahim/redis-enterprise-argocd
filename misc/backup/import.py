@@ -23,48 +23,57 @@ cldesc = ''
 backup_location = ''
 dbname = ''
 
-# Function to import Redis backup to a mount point with timestamped folder
-def import_redis_backup(bdb_uid: int, ts_dir):
+import os
+import json
+import requests
+from requests.auth import HTTPBasicAuth
 
+def import_redis_backup(bdb_uid: int, ts_dir):
     backup_path_db_ts = os.path.join(backup_location, dbname, ts_dir)
 
-    if os.path.isdir(backup_path_db_ts):
-      print("Directory exists.")
+    if not os.path.isdir(backup_path_db_ts):
+        print("Directory does not exist.")
+        return
     else:
-      print("Directory does not exist.")
-      #return
-     
+        print("Directory exists.")
+
+    import_sources = []
+
     for filename in os.listdir(backup_path_db_ts):
-       file_path = os.path.join(backup_path_db_ts, filename)
-       if os.path.isfile(file_path):
-          print(f"File: {file_path}")
-          # Prepare the export request
-          url = f"https://{host}:{port}/v1/bdbs/{bdb_uid}/actions/import"
-          headers = {"Content-Type": "application/json"}
-          data = {
-            "dataset_import_sources": [{
-               "type": "mount_point",
-               "path": file_path  # Must exist and be writable on Redis Enterprise node
-            }]
-          }
+        file_path = os.path.join(backup_path_db_ts, filename)
+        if os.path.isfile(file_path):
+            print(f"File: {file_path}")
+            import_sources.append({
+                "type": "mount_point",
+                "path": file_path
+            })
 
-          print("Sending request to:", url)
-          print("Request payload:", json.dumps(data, indent=2))
+    if not import_sources:
+        print("No files found for import.")
+        return
 
-          # Make POST request to export backup
-          response = requests.post(
-             url,
-             headers=headers,
-             json=data,
-             auth=HTTPBasicAuth(cluser, clpass),
-             verify=False  # Skip SSL verification for now
-          )
+    # Prepare the import request
+    url = f"https://{host}:{port}/v1/bdbs/{bdb_uid}/actions/import"
+    headers = {"Content-Type": "application/json"}
+    data = {
+        "dataset_import_sources": import_sources
+    }
 
-    # Print API response
-    print("Response code:", response.status_code)
+    print("Sending request to:", url)
+    print("Request payload:", json.dumps(data, indent=2))
+
+    # Make POST request to import backup
+    response = requests.post(
+        url,
+        headers=headers,
+        json=data,
+        auth=HTTPBasicAuth(cluser, clpass),
+        verify=False  # Skip SSL verification for now
+    )
+
+    print("Response status code:", response.status_code)
     print("Response body:", response.text)
 
-    return response
 
 # Function to get all Redis databases via REST API
 def get_bdbs():
@@ -144,4 +153,3 @@ if __name__ == "__main__":
             print(" No data returned from get_bdbs()")
     except Exception as e:
         print(f"Error occurred: {e}")
-
