@@ -25,6 +25,7 @@ kubectl delete -f south-dev-db1-argo.yaml
 
 ```
 
+### Change password
 ```
 read -r -d '' payload <<EOF
 {
@@ -34,7 +35,7 @@ read -r -d '' payload <<EOF
 }
 EOF
 
-curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X PUT \
+curl -k -u "$REC_USERNAME:$REC_PASSWORD" -X POST \
 -H "Content-Type: application/json" \
 -d "$payload" \
 "https://south-dev-rec:9443/v1/users/password"
