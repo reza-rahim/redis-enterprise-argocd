@@ -363,6 +363,22 @@ exit 1
 
 ```
 
+**The shell variable $? holds the exit status of the last executed command:**
+
+- 0 means success (the command ran without errors).
+- Any non-zero value means failure (the command encountered an error).
+
+
+```
+# command
+
+if [[ $? == 0 ]]; then
+  echo "Success"
+else
+  echo "Failure"
+fi
+```
+
 ---
 
 ### Deploy a single region Database  
