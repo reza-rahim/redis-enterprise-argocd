@@ -379,6 +379,11 @@ else
 fi
 ```
 
+<br>
+**Ingress example** [link](misc/ingress/healtcheck.yaml)
+<br>
+
+
 
 ---
 
