@@ -328,6 +328,41 @@ The goal is to provide a flexible, parameterized HTTP endpoint (/probe) that can
 http://health-check:5000/probe?host=db1&port=13000&tls=true
 ```
 
+
+**This Bash script checks the health of a Redis instance via an HTTP probe up to 5 times:**
+
+- It uses parameterized variables for timeout, sleep, host, port, and TLS.
+- Sends a request to a health-check endpoint and captures the HTTP status code.
+- If the response is 200 (OK), it prints "database healthy" and exits with code 0.
+- Otherwise, it waits and retries up to 5 times, then exits with code 1 if all fail.
+
+```
+#!/bin/bash
+
+TIMEOUT_DURATION=2      # Timeout for curl in seconds
+RETRY_INTERVAL=5        # Wait time between retries in seconds
+HOST="db1"              # Redis db service name
+PORT="13000"            # Redis port
+TLS="true"              # TLS enabled or not (true/false)
+
+for i in 1 2 3 4 5
+do
+  URL="http://health-check:5000/probe?host=$HOST&port=$PORT&tls=$TLS"
+  status_code=$(timeout "$TIMEOUT_DURATION" curl -s -o /dev/null -w "%{http_code}" "$URL")
+
+  if [[ "$status_code" == "200" ]]; then
+    echo "database healthy"
+    exit 0
+  fi
+
+  echo "database unhealthy (HTTP $status_code), retrying in $RETRY_INTERVAL sec"
+  sleep "$RETRY_INTERVAL"
+done
+
+exit 1
+
+```
+
 ---
 
 ### Deploy a single region Database  
