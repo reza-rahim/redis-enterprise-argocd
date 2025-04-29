@@ -379,9 +379,7 @@ else
 fi
 ```
 
-<br>
-**Ingress example for healthcheck** [ingress file](misc/ingress/healtcheck.yaml)
-<br>
+
 ---
 
 ### Deploy a single region Database  
