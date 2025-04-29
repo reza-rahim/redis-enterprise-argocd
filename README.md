@@ -363,6 +363,8 @@ exit 1
 
 ```
 
+**Ingress example for healthcheck** ()
+
 **The shell variable $? holds the exit status of the last executed command:**
 
 - 0 means success (the command ran without errors).
@@ -418,7 +420,7 @@ spec:
 
 <br>
 
-**Accessing the database db1**
+**Accessing the database db1**([ingres file](misc/ingress/healtcheck.yaml)
 ```
 redis-cli -h db1.south-dev -p 13000 --tls --insecure 
 auth user password
