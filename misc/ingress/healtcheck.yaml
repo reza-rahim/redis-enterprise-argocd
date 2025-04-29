@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: health-check-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /probe
+spec:
+  rules:
+  - host: health-check.example.com  # Change to your real domain
+    http:
+      paths:
+      - path: /probe
+        pathType: Prefix
+        backend:
+          service:
+            name: health-check
+            port:
+              number: 5000
