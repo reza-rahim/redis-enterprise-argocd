@@ -36,12 +36,12 @@ spec:
             - |
               python /etc/config/health/app.py
           env:
-            - name: HEATHCHECK_USERNAME
+            - name: HEALTHCHECK_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: health-check-user
                   key: username
-            - name: HEATHCHECK_PASSWORD
+            - name: HEALTHCHECK_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: health-check-user
