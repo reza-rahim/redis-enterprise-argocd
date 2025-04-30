@@ -20,8 +20,8 @@ data:
         if not host:
             return jsonify({'error': 'Missing required parameter: host'}), 400
 
-        redis_username = os.getenv('HEATHCHECK_USERNAME')
-        redis_password = os.getenv('HEATHCHECK_PASSWORD')
+        redis_username = os.getenv('HEALTHCHECK_USERNAME')
+        redis_password = os.getenv('HEALTHCHECK_PASSWORD')
 
         if not redis_username or not redis_password:
             return jsonify({'error': 'Missing Redis credentials in environment'}), 500
