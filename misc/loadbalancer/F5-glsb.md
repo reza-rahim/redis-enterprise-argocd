@@ -4,7 +4,7 @@ F5 GSLB, also known as **F5 DNS** (formerly GTM – Global Traffic Manager), is 
 
 ---
 
-## 🔧 Core Functionality of F5 GSLB
+##  Core Functionality of F5 GSLB
 
 ### DNS-Based Load Balancing
 - Operates primarily at the **DNS level**.
@@ -37,7 +37,7 @@ F5 chooses the best destination based on:
 
 ---
 
-## 🛠 Example Workflow
+##  Example Workflow
 
 1. User types `app.example.com` into a browser.
 2. DNS query is intercepted by **F5 GSLB**.
@@ -50,7 +50,7 @@ F5 chooses the best destination based on:
 
 ---
 
-## 🌍 GSLB with Multiple Pools (Primary & Secondary)
+##  GSLB with Multiple Pools (Primary & Secondary)
 
 This setup prefers **Primary Pool** members (main data center) and falls back to **Secondary Pool** members (backup/DR site) if necessary.
 
@@ -76,7 +76,7 @@ This setup prefers **Primary Pool** members (main data center) and falls back to
 
 ---
 
-## ✅ Example Configuration Summary
+## Example Configuration Summary
 
 **Wide IP**: `app.example.com`
 
@@ -93,5 +93,5 @@ This setup prefers **Primary Pool** members (main data center) and falls back to
 
 ---
 
-## 📈 Logic Diagram (Text-Based)
-
+## Logic Diagram 
+<img src="f5-gslb.png" width="800">
