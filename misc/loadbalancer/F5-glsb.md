@@ -76,17 +76,29 @@ This setup prefers **Primary Pool** members (main data center) and falls back to
 
 ---
 
+## Redis specific instruction
+
+- A Wide IP contains multiple pools and should be creaeted per database.
+
+- Each pool maps to a specific Redis cluster.
+
+- Each pool includes all IP addresses of the nodes within that Redis cluster and database port number
+
+- The database should run on the proxy of every node in the cluster.
+  
 ## Example Configuration Summary
 
 **Wide IP**: `app.example.com`
 
-### Pool 1 (Primary)
+### Redis Cluster/Pool 1 (Primary)
 - Site A – `10.0.0.1`
 - Site A – `10.0.0.2`
+- Site A – `10.0.0.3`
 
-### Pool 2 (Secondary)
+### Redis Cluster/Pool 2 (Secondary)
 - Site B – `20.0.0.1`
 - Site B – `20.0.0.2`
+- Site B – `20.0.0.3`
 
 - **Health Monitors**: Enabled on all members
 - **Load Balancing**: Global Availability
@@ -95,3 +107,5 @@ This setup prefers **Primary Pool** members (main data center) and falls back to
 
 ## Logic Diagram 
 <img src="redis-f5-gslb.png" width="800">
+
+
