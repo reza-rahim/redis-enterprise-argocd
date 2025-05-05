@@ -94,4 +94,4 @@ This setup prefers **Primary Pool** members (main data center) and falls back to
 ---
 
 ## Logic Diagram 
-<img src="f5-gslb.png" width="800">
+<img src="redis-f5-gslb.png" width="800">
