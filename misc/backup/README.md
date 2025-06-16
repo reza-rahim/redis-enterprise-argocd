@@ -61,10 +61,10 @@ Example Directory Structure After Export
 
 ```
 from pathlib import Path
-
-base_path = Path('/your/base/directory')  # Change this to your target path
-
-directories = [d.name for d in base_path.iterdir() if d.is_dir()]
-
-print(directories)
+try:
+    base_path = Path('/your/base/directory')  # Change this to your actual path
+    directories = [d.name for d in base_path.iterdir() if d.is_dir()]
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+    directories = []
 ```
