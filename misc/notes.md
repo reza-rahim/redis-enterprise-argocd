@@ -2,6 +2,8 @@
 
 sudo tcpdump -i any dst port 389 and tcp -nn -s 0 -v
 
+sudo tcpdump -i any dst port 389 -nn -s 0 -w ldap_outbound.pcap
+
 
 ss -pnt sport = :389
 
