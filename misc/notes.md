@@ -17,4 +17,8 @@ netstat -pant | grep ':389'
 
 
 ps -fp 1234
+
+
+find /etc -type f -name "*.conf" -exec grep -Hn "ldap" {} +
+
 ```
