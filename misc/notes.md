@@ -21,4 +21,11 @@ ps -fp 1234
 
 find /etc -type f -name "*.conf" -exec grep -Hn "ldap" {} +
 
+
+find . -type f -readable -exec file --mime {} + \
+  | grep 'text/' \
+  | cut -d: -f1 \
+  | xargs grep -Hn "ldap"
+
+
 ```
