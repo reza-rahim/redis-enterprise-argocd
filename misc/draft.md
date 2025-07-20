@@ -10,3 +10,5 @@ The Inventory team is requested to update the inventory database ingestion proce
 
 
 https://www.linkedin.com/pulse/big-shift-from-kubernetes-power-tool-invisible-plumbing-reza-rahim-nc8vc
+
+https://www.linkedin.com/pulse/fine-tuning-embedding-model-synthetic-data-improving-rag-reza-rahim-ayvsc/
