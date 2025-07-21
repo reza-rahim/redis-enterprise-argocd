@@ -12,3 +12,16 @@ The Inventory team is requested to update the inventory database ingestion proce
 https://www.linkedin.com/pulse/big-shift-from-kubernetes-power-tool-invisible-plumbing-reza-rahim-nc8vc
 
 https://www.linkedin.com/pulse/fine-tuning-embedding-model-synthetic-data-improving-rag-reza-rahim-ayvsc/
+
+
+```
+curl \
+  --header "Authorization: Bearer $TFE_TOKEN" \
+  https://app.terraform.io/api/v2/workspaces/<workspace-id>/state-versions
+
+curl \
+  --request DELETE \
+  --header "Authorization: Bearer $TFE_TOKEN" \
+  https://app.terraform.io/api/v2/state-versions/<state-version-id>
+
+```
