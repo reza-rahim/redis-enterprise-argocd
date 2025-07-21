@@ -25,3 +25,7 @@ curl \
   https://app.terraform.io/api/v2/state-versions/<state-version-id>
 
 ```
+
+```
+terraform apply -parallelism=1
+```
