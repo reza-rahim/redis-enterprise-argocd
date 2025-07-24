@@ -28,4 +28,8 @@ curl \
 
 ```
 terraform apply -parallelism=1
+
+find /path/to/directory -type f -mtime +7
 ```
+
+
