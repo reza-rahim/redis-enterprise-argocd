@@ -43,4 +43,8 @@ crdb-cli crdb create \
   --instance fqdn=rec03.ns3.svc.cluster.local,url=https://api.apps.demo-3.ps-redis.com,username=demo@redislabs.com,password=5bpxJEVo,replication_endpoint=db-cluster.demo-3.ps-redis.com:443,replication_tls_sni=db-cluster.demo-3.ps-redis.com
 ```
 
+```
+crdb-cli crdb create --name <CRDBNAME> --memory-size Xgb --default-db-config '{"name": "<CRDBNAME>", "port": <PORTNUMBER>, "sharding": false, "shards_count": 1, "replication": false}' --instance fqdn=<CLUSTER_FQDN_1>,usernam=<USERNAME>, password=<PASSWORD> --instance <CLUSTER_FQDN_2>,usernam=<USERNAME2>, password=<PASSWORD2>
+```
+
 
