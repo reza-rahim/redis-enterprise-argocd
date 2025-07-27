@@ -32,4 +32,15 @@ terraform apply -parallelism=1
 find /path/to/directory -type f -mtime +7
 ```
 
+```
+crdb-cli crdb create \
+  --name db \
+  --memory-size 1GB \
+  --encryption yes \
+  --port 12000 \
+  --password test \
+  --instance fqdn=rec02.ns2.svc.cluster.local,url=https://api.apps.demo-2.ps-redis.com,username=demo@redislabs.com,password=DwTox56v,replication_endpoint=db-cluster.demo-2.ps-redis.com:443,replication_tls_sni=db-cluster.demo-2.ps-redis.com \
+  --instance fqdn=rec03.ns3.svc.cluster.local,url=https://api.apps.demo-3.ps-redis.com,username=demo@redislabs.com,password=5bpxJEVo,replication_endpoint=db-cluster.demo-3.ps-redis.com:443,replication_tls_sni=db-cluster.demo-3.ps-redis.com
+```
+
 
