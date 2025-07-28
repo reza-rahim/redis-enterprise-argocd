@@ -44,7 +44,14 @@ crdb-cli crdb create \
 ```
 
 ```
-crdb-cli crdb create --name <CRDBNAME> --memory-size Xgb --default-db-config '{"name": "<CRDBNAME>", "port": <PORTNUMBER>, "sharding": false, "shards_count": 1, "replication": false}' --instance fqdn=<CLUSTER_FQDN_1>,usernam=<USERNAME>, password=<PASSWORD> --instance <CLUSTER_FQDN_2>,usernam=<USERNAME2>, password=<PASSWORD2>
+import csv
+
+with open('your_file.csv', newline='') as csvfile:
+    reader = csv.DictReader(filter(lambda row: not row.startswith('#'), csvfile))
+    for row in reader:
+        kv = dict(row)
+        print(kv)
+
 ```
 
 
