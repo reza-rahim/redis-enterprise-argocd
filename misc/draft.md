@@ -58,4 +58,8 @@ with open('your_file.csv', newline='') as csvfile:
 https://redis.io/docs/latest/operate/rs/networking/cluster-lba-setup/#network-architecture-with-load-balancer
 ```
 
+```
+find /your/target/path -mindepth 1 -mtime +7 -exec rm -rf {} +
+```
+
 
