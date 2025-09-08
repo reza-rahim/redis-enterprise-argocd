@@ -1,6 +1,7 @@
+
 #!/usr/bin/env python3
 import sys
-import json
+import yaml  # pip install pyyaml
 
 # Fields we want to drop from metadata
 DROP_FIELDS = {
@@ -24,6 +25,11 @@ def clean_k8s_obj(obj):
     return obj
 
 if __name__ == "__main__":
-    data = json.load(sys.stdin)
+    data = yaml.safe_load(sys.stdin)     # read YAML from stdin
     data = clean_k8s_obj(data)
-    json.dump(data, sys.stdout, indent=2)
+    yaml.safe_dump(
+        data,
+        sys.stdout,
+        sort_keys=False,
+        default_flow_style=False
+    )
