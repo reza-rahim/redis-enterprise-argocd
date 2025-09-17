@@ -1,7 +1,4 @@
 
-While working toward the Ansible-based CD approach prescribed by Sami, we encountered some technical challenges configuring Ansible Tower with Ansible Vault secrets.
-
-Abinash kindly took the time to walk us through how to properly set up the secrets in Tower. His guidance was a big help, and we truly appreciate his support
 
 ```
 rladmin tune db db:<ID> max_connections N
