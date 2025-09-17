@@ -1,5 +1,8 @@
 
 ```
+rladmin tune db db:<ID> max_connections N
+```
+```
 kubectl get secret -n south-dev  south-dev-rec  -o jsonpath="{.data.username}" | base64 --decode
 echo
 kubectl get secret -n south-dev  south-dev-rec  -o jsonpath="{.data.password}" | base64 --decode
