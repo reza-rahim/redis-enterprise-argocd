@@ -106,6 +106,9 @@ ansible-playbook login.yml --vault-password-file ~/.vault_pass.txt
         state: directory
         prefix: oc-render-
       register: tempdir
+- name: Show generated directory
+  debug:
+    var: tempdir.path
 
     - name: Set path for rendered manifest
       ansible.builtin.set_fact:
