@@ -100,3 +100,42 @@ ansible-playbook login.yml --vault-password-file ~/.vault_pass.txt
 
 ```
 
+```
+tasks:
+    - name: Render Kubernetes/OpenShift deployment from template
+      ansible.builtin.template:
+        src: "templates/deployment.yaml.j2"
+        dest: "{{ render_path }}"
+        mode: "0600"
+
+    - name: Apply rendered manifest with oc
+      ansible.builtin.command: >
+        oc apply -f {{ render_path }}
+        --kubeconfig {{ kubeconfig_path }}
+        {% if oc_insecure_skip_tls_verify %} --insecure-skip-tls-verify=true {% endif %}
+      register: oc_apply
+      changed_when: >
+        (' created' in oc_apply.stdout) or
+        (' configured' in oc_apply.stdout) or
+        ('patched' in oc_apply.stdout)
+      failed_when: oc_apply.rc != 0
+
+    - name: Show apply output (debug)
+      ansible.builtin.debug:
+        var: oc_apply.stdout_lines
+
+    - name: Wait for rollout to complete
+      ansible.builtin.command: >
+        oc rollout status deployment/{{ app_name }}
+        --namespace {{ oc_namespace }}
+        --kubeconfig {{ kubeconfig_path }}
+        --timeout=120s
+      register: oc_rollout
+      changed_when: false
+      failed_when: oc_rollout.rc != 0
+
+    - name: Show rollout status
+      ansible.builtin.debug:
+        var: oc_rollout.stdout
+```
+
