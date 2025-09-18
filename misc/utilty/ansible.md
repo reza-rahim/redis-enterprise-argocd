@@ -101,7 +101,16 @@ ansible-playbook login.yml --vault-password-file ~/.vault_pass.txt
 ```
 
 ```
-tasks:
+- name: Create a temporary render directory
+      ansible.builtin.tempfile:
+        state: directory
+        prefix: oc-render-
+      register: tempdir
+
+    - name: Set path for rendered manifest
+      ansible.builtin.set_fact:
+        render_path: "{{ tempdir.path }}/{{ app_name }}.deployment.yaml"
+
     - name: Render Kubernetes/OpenShift deployment from template
       ansible.builtin.template:
         src: "templates/deployment.yaml.j2"
@@ -120,10 +129,6 @@ tasks:
         ('patched' in oc_apply.stdout)
       failed_when: oc_apply.rc != 0
 
-    - name: Show apply output (debug)
-      ansible.builtin.debug:
-        var: oc_apply.stdout_lines
-
     - name: Wait for rollout to complete
       ansible.builtin.command: >
         oc rollout status deployment/{{ app_name }}
@@ -134,8 +139,10 @@ tasks:
       changed_when: false
       failed_when: oc_rollout.rc != 0
 
-    - name: Show rollout status
-      ansible.builtin.debug:
-        var: oc_rollout.stdout
+  post_tasks:
+    - name: Remove temporary render directory
+      ansible.builtin.file:
+        path: "{{ tempdir.path }}"
+        state: absent
 ```
 
