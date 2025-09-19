@@ -1,5 +1,10 @@
 
 ```
+usageMeter:
+    callHomeClient:
+      disabled: true
+```
+```
 openshift-login/
 ├── group_vars/
 │   └── all/
