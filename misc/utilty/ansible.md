@@ -1,5 +1,18 @@
 
 ```
+  - name: Create temporary directory for kubeconfig
+      ansible.builtin.tempfile:
+        state: directory
+        prefix: oc-kubeconfig-
+      register: kube_tmpdir
+
+    - name: Define kubeconfig path inside temp dir
+      ansible.builtin.set_fact:
+        kubeconfig_path: "{{ kube_tmpdir.path }}/config"
+
+```
+
+```
 usageMeter:
     callHomeClient:
       disabled: true
