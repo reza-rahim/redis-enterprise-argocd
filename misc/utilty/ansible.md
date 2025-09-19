@@ -6,9 +6,13 @@
         prefix: oc-kubeconfig-
       register: kube_tmpdir
 
-    - name: Define kubeconfig path inside temp dir
-      ansible.builtin.set_fact:
-        kubeconfig_path: "{{ kube_tmpdir.path }}/config"
+- name: Show temporary kubeconfig directory
+  ansible.builtin.debug:
+     msg: "Temporary kubeconfig directory is: {{ kube_tmpdir.path }}"
+
+- name: Define kubeconfig path inside temp dir
+  ansible.builtin.set_fact:
+     kubeconfig_path: "{{ kube_tmpdir.path }}/config"
 
 ```
 
