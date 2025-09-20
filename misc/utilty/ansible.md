@@ -1,5 +1,10 @@
 
 ```
+oc get secret <secret-name> -n <namespace> -o yaml \
+  | python3 -c "import sys,yaml; print(yaml.safe_dump(yaml.safe_load(sys.stdin.read()), sort_keys=False))"
+
+```
+```
   - name: Create temporary directory for kubeconfig
       ansible.builtin.tempfile:
         state: directory
