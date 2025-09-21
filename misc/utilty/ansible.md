@@ -1,4 +1,16 @@
 
+
+```
+- name: Wait for all pods to be ready
+  ansible.builtin.command: >
+    oc wait --for=condition=Ready pods --all
+    -n {{ oc_namespace }} --timeout=120s
+  register: oc_wait
+  changed_when: false
+  failed_when: oc_wait.rc != 0
+
+
+```
 ```
 - name: Fetch secret and render config
   hosts: localhost
