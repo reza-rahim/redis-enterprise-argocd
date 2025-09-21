@@ -1,6 +1,11 @@
 
 
 ```
+
+- name: Sleep for 15 seconds before waiting for pods
+  ansible.builtin.pause:
+    seconds: 15
+
 - name: Wait for all pods to be ready
   ansible.builtin.command: >
     oc wait --for=condition=Ready pods --all
