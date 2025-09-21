@@ -1,5 +1,45 @@
 
 ```
+- name: Fetch secret and render config
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    secret_name: "my-db-secret"
+    secret_namespace: "my-namespace"
+    config_template: "templates/app-config.yaml.j2"
+    config_output: "/tmp/app-config.yaml"
+
+  tasks:
+    - name: Get secret from OpenShift
+      ansible.builtin.command: >
+        oc get secret {{ secret_name }}
+        -n {{ secret_namespace }}
+        -o json
+      register: oc_secret
+      changed_when: false
+
+    - name: Parse secret JSON
+      ansible.builtin.set_fact:
+        secret_data: "{{ oc_secret.stdout | from_json }}"
+
+    - name: Decode username and password
+      ansible.builtin.set_fact:
+        db_username: "{{ secret_data.data.username | b64decode }}"
+        db_password: "{{ secret_data.data.password | b64decode }}"
+
+    - name: Render config file with secret values
+      ansible.builtin.template:
+        src: "{{ config_template }}"
+        dest: "{{ config_output }}"
+        mode: "0600"
+      vars:
+        db_user: "{{ db_username }}"
+        db_pass: "{{ db_password }}"
+
+```
+
+```
 oc get secret <secret-name> -n <namespace> -o yaml \
   | python3 -c "import sys,yaml; print(yaml.safe_dump(yaml.safe_load(sys.stdin.read()), sort_keys=False))"
 
