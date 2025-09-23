@@ -1,4 +1,8 @@
+```
+oc api-resources --verbs=list --namespaced -o name \
+  | xargs -n 1 oc get -n <project-name>
 
+```
 
 ```
 
