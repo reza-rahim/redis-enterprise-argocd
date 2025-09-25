@@ -1,4 +1,7 @@
 
+```
+After receiving detailed input from the BofA team on the importance of resources, roles, permissions, and commands, I identified that the OpenShift administrator had granted exec access not at the pod resource level, but based on the pod name. As a result, access was controlled through naming conventions rather than by pod type.
+```
 
 ```
 rladmin tune db db:<ID> max_connections N
