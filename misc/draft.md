@@ -16,3 +16,5 @@ MinIO Blog
 
 In short: MinIO’s multi-site active-active design makes it an excellent foundation for robust, distributed backup systems — resilient, performant, and always on.
 ```
+
+We had some in-depth discussions about external backup systems for the Redis database. MinIO was mentioned as a potential option, and with its active-active replication feature, it could be a viable solution.
