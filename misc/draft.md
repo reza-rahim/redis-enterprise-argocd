@@ -1,65 +1,18 @@
-We are in the process of implementing a Redis database with remote backup functionality. As part of audit and compliance requirements, it is necessary to report which databases have the backup option enabled and the corresponding backup timestamps.
-
-To support this, we are introducing two additional fields in the inventory JSON file:
-
-persistence – Indicates whether backup is enabled.
-
-backup_times – Captures the timestamps when backups were performed.
-
-The Inventory team is requested to update the inventory database ingestion process to accommodate these two new fields.
-
-
-https://www.linkedin.com/pulse/big-shift-from-kubernetes-power-tool-invisible-plumbing-reza-rahim-nc8vc
-
-https://www.linkedin.com/pulse/fine-tuning-embedding-model-synthetic-data-improving-rag-reza-rahim-ayvsc/
-
-
 ```
-curl \
-  --header "Authorization: Bearer $TFE_TOKEN" \
-  https://app.terraform.io/api/v2/workspaces/<workspace-id>/state-versions
+With multi-site, active-active replication, MinIO enables multiple independent deployments (locations, data centers, or regions) to operate as peers, synchronizing data in real time. 
+MinIO Blog
 
-curl \
-  --request DELETE \
-  --header "Authorization: Bearer $TFE_TOKEN" \
-  https://app.terraform.io/api/v2/state-versions/<state-version-id>
+This architecture brings several decisive advantages for backup strategies:
 
+Continuous availability / hot-hot access — writes can be accepted anywhere, without waiting for failover
+
+Geographic redundancy — your data remains accessible even if an entire site fails
+
+Consistent object state across sites — changes (uploads, deletes, metadata) replicate fully across all nodes 
+MinIO Blog
+
+Scalable mesh replication — no hard limit on number of sites; each bucket can replicate across many deployments 
+MinIO Blog
+
+In short: MinIO’s multi-site active-active design makes it an excellent foundation for robust, distributed backup systems — resilient, performant, and always on.
 ```
-
-```
-terraform apply -parallelism=1
-
-find /path/to/directory -type f -mtime +7
-```
-
-```
-crdb-cli crdb create \
-  --name db \
-  --memory-size 1GB \
-  --encryption yes \
-  --port 12000 \
-  --password test \
-  --instance fqdn=rec02.ns2.svc.cluster.local,url=https://api.apps.demo-2.ps-redis.com,username=demo@redislabs.com,password=DwTox56v,replication_endpoint=db-cluster.demo-2.ps-redis.com:443,replication_tls_sni=db-cluster.demo-2.ps-redis.com \
-  --instance fqdn=rec03.ns3.svc.cluster.local,url=https://api.apps.demo-3.ps-redis.com,username=demo@redislabs.com,password=5bpxJEVo,replication_endpoint=db-cluster.demo-3.ps-redis.com:443,replication_tls_sni=db-cluster.demo-3.ps-redis.com
-```
-
-```
-import csv
-
-with open('your_file.csv', newline='') as csvfile:
-    reader = csv.DictReader(filter(lambda row: not row.startswith('#'), csvfile))
-    for row in reader:
-        kv = dict(row)
-        print(kv)
-
-```
-
-```
-https://redis.io/docs/latest/operate/rs/networking/cluster-lba-setup/#network-architecture-with-load-balancer
-```
-
-```
-find /your/target/path -mindepth 1 -mtime +7 -exec rm -rf {} +
-```
-
-
