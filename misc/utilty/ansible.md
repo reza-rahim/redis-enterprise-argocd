@@ -18,7 +18,7 @@
                    else (get_item.content | default('{}') | from_json) }}"
   when: get_item.status == 200
 
-- name: Create item when JSON missing field
+- name: Create item when bind_dn is missing or empty
   ansible.builtin.uri:
     url: "https://api.example.com/items"
     method: POST
@@ -31,12 +31,12 @@
     body_format: json
     body:
       id: 123
-      value: "new-value"
+      bind_dn: "cn=service,dc=example,dc=com"
     status_code: [200, 201]
   when:
     - get_item.status == 404
-    - item_json.value is not defined or item_json.value | length == 0
-
+      or item_json.bind_dn is not defined
+      or (item_json.bind_dn | trim | length == 0)
 
 ```
 
