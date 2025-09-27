@@ -1,6 +1,34 @@
 ```
-oc api-resources --verbs=list --namespaced -o name \
-  | xargs -n 1 oc get -n <project-name>
+- name: GET item
+  ansible.builtin.uri:
+    url: "https://api.example.com/items/123"
+    method: GET
+    return_content: yes
+    status_code: [200, 404]    # don’t fail if not found
+  register: get_item
+
+- name: Normalize JSON
+  ansible.builtin.set_fact:
+    item_json: "{{ get_item.json
+                   if (get_item.json is defined and get_item.json is mapping)
+                   else (get_item.content | default('{}') | from_json) }}"
+  when: get_item.status == 200
+
+- name: Create item when JSON missing field
+  ansible.builtin.uri:
+    url: "https://api.example.com/items"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body_format: json
+    body:
+      id: 123
+      value: "new-value"
+    status_code: [200, 201]
+  when:
+    - get_item.status == 404               # item not found at all
+    - item_json.value is not defined or item_json.value | length == 0
+
 
 ```
 
