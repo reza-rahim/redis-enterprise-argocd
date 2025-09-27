@@ -3,8 +3,12 @@
   ansible.builtin.uri:
     url: "https://api.example.com/items/123"
     method: GET
+    user: "{{ api_user }}"          # username
+    password: "{{ api_pass }}"      # password
+    force_basic_auth: true          # always send credentials
+    validate_certs: no              # like curl -k
     return_content: yes
-    status_code: [200, 404]    # don’t fail if not found
+    status_code: [200, 404]
   register: get_item
 
 - name: Normalize JSON
@@ -18,6 +22,10 @@
   ansible.builtin.uri:
     url: "https://api.example.com/items"
     method: POST
+    user: "{{ api_user }}"
+    password: "{{ api_pass }}"
+    force_basic_auth: true
+    validate_certs: no
     headers:
       Content-Type: "application/json"
     body_format: json
@@ -26,7 +34,7 @@
       value: "new-value"
     status_code: [200, 201]
   when:
-    - get_item.status == 404               # item not found at all
+    - get_item.status == 404
     - item_json.value is not defined or item_json.value | length == 0
 
 
