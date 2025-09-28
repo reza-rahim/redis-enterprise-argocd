@@ -1,4 +1,28 @@
 ```
+- hosts: localhost
+  gather_facts: no
+  vars:
+    ocp_targets:
+      - { ocp_cluster: "a", namespace: "n1" }
+      - { ocp_cluster: "b", namespace: "n2" }
+      - { ocp_cluster: "c", namespace: "n3" }
+
+  roles:
+    - role: main_role
+      vars:
+        ocp_cluster: "{{ item.ocp_cluster }}"
+        namespace: "{{ item.namespace }}"
+      loop: "{{ ocp_targets }}"
+      loop_control:
+        label: "{{ item.ocp_cluster }}:{{ item.namespace }}"
+
+    - role: final_role
+      vars:
+        all_targets: "{{ ocp_targets }}"
+        last_target: "{{ ocp_targets[-1] }}"
+        is_final: true
+```
+```
 ---
 - name: Run roles with last-element handling
   hosts: localhost
