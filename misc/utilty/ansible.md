@@ -1,4 +1,10 @@
 ```
+- name: Run if 'admin' does NOT exist
+  ansible.builtin.debug:
+    msg: "Admin is missing, need to create"
+  when: users_list | selectattr('name', 'equalto', 'admin') | list | length == 0
+```
+```
 ldap:
     # REQUIRED: which LDAP protocol to use
     # Allowed: LDAP | LDAPS | STARTTLS
