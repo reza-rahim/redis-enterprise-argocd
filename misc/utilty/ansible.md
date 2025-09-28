@@ -1,21 +1,33 @@
 ```
 ---
-- name: Run role for each cluster/namespace
+- name: Run roles with last-element handling
   hosts: localhost
   gather_facts: no
   vars:
     ocp_targets:
       - { ocp_cluster: "a", namespace: "n1" }
       - { ocp_cluster: "b", namespace: "n2" }
+      - { ocp_cluster: "c", namespace: "n3" }
 
   tasks:
-    - name: Call my role for each cluster/namespace
+    - name: Run main role for each cluster/namespace
       include_role:
-        name: my_role
+        name: main_role
       vars:
         ocp_cluster: "{{ item.ocp_cluster }}"
         namespace: "{{ item.namespace }}"
       loop: "{{ ocp_targets }}"
+
+    - name: Run special role only for last element
+      include_role:
+        name: final_role
+      vars:
+        ocp_cluster: "{{ item.ocp_cluster }}"
+        namespace: "{{ item.namespace }}"
+      loop: "{{ ocp_targets }}"
+      when: loop.last
+
+
 ```
 
 
