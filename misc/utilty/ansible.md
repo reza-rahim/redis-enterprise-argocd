@@ -46,6 +46,16 @@ ldap:
 
 ```
 ```
+# Secret for LDAP bind account (keys: dn, password)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ldap-bind-cred
+type: Opaque
+stringData:
+  dn: "cn=svc_ldap_bind,o
+```
+```
 - name: GET item
   ansible.builtin.uri:
     url: "https://api.example.com/items/123"
