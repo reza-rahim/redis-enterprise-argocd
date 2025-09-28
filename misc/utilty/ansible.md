@@ -1,4 +1,25 @@
 ```
+---
+- name: Run role for each cluster/namespace
+  hosts: localhost
+  gather_facts: no
+  vars:
+    ocp_targets:
+      - { ocp_cluster: "a", namespace: "n1" }
+      - { ocp_cluster: "b", namespace: "n2" }
+
+  tasks:
+    - name: Call my role for each cluster/namespace
+      include_role:
+        name: my_role
+      vars:
+        ocp_cluster: "{{ item.ocp_cluster }}"
+        namespace: "{{ item.namespace }}"
+      loop: "{{ ocp_targets }}"
+```
+
+
+```
 - name: Run if 'admin' does NOT exist
   ansible.builtin.debug:
     msg: "Admin is missing, need to create"
