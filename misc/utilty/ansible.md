@@ -1,4 +1,51 @@
 ```
+ldap:
+    # REQUIRED: which LDAP protocol to use
+    # Allowed: LDAP | LDAPS | STARTTLS
+    protocol: LDAPS
+
+    # One or more LDAP servers
+    servers:
+      - host: ldap1.example.com
+        port: 636        # defaults: 389 for LDAP/STARTTLS, 636 for LDAPS
+      - host: ldap2.example.com
+        port: 636
+
+    # Bind credentials (Secret in same namespace, keys: dn, password)
+    bindCredentialsSecretName: ldap-bind-cred
+
+    # CA cert for LDAPS / STARTTLS (Secret key: cert)
+    caCertificateSecretName: ldap-ca-cert
+
+    # (Optional) timeouts & caching
+    directoryTimeoutSeconds: 5
+    cacheTTLSeconds: 60
+
+    # Turn on LDAP for control-plane (REC UI/API) and/or data-plane (DB users)
+    enabledForControlPlane: true
+    enabledForDataPlane: true
+
+    # REQUIRED: how to find the user's DN to authenticate (pick ONE style)
+
+    # Option A: template (simple and common)
+    authenticationQuery:
+      template: "uid=%u,ou=people,dc=example,dc=com"
+
+    # Option B: search query (mutually exclusive with template)
+    # authenticationQuery:
+    #   query:
+    #     base: "ou=people,dc=example,dc=com"
+    #     filter: "(uid=%u)"
+    #     scope: WholeSubtree   # BaseObject | SingleLevel | WholeSubtree
+
+    # REQUIRED: how to get group memberships (pick ONE style)
+
+    # Option A: attribute on user entry
+    authorizationQuery:
+      attribute: "memberOf"
+
+```
+```
 - name: GET item
   ansible.builtin.uri:
     url: "https://api.example.com/items/123"
