@@ -1,51 +1,21 @@
 ```
-- hosts: localhost
+- name: Wait until cluster test results are all true
+  hosts: localhost
   gather_facts: false
-  vars:
-    check_url: "https://example.com/api/status"  # <-- your endpoint
-    poll_retries: 30
-    poll_delay: 5
-
   tasks:
-    - name: Poll until cluster and all nodes are true
-      ansible.builtin.uri:
-        url: "{{ check_url }}"
+    - name: Poll cluster status
+      uri:
+        url: "http://your-api-endpoint/cluster/status"
         method: GET
-        headers:
-          Accept: application/json
-        return_content: true
-        status_code: 200
-        timeout: 10
-        validate_certs: true
-      register: resp
+        return_content: yes
+      register: cluster_status
       until: >
-        (
-          resp.json is defined and
-          (resp.json.cluster_test_result | default(false) | bool) and
-          (resp.json.nodes is defined) and
-          ((resp.json.nodes | length) > 0) and
-          (
-            (resp.json.nodes | selectattr('result','equalto', false) | list | length) == 0
-          )
-        )
-        or
-        (
-          resp.content is defined and
-          (resp.content | length) > 0) and
-          (
-            ((resp.content | from_json).cluster_test_result | default(false) | bool) and
-            (((resp.content | from_json).nodes | length) > 0) and
-            (((resp.content | from_json).nodes
-               | selectattr('result','equalto', false) | list | length) == 0)
-          )
-        )
-      retries: "{{ poll_retries }}"
-      delay: "{{ poll_delay }}"
-      changed_when: false
+        (cluster_status.json.cluster_test_result | bool) and
+        (cluster_status.json.nodes | map(attribute='result') | list | unique == [true])
+      retries: 30
+      delay: 10
+      failed_when: cluster_status.json is not defined
 
-    - name: Proceed after success
-      debug:
-        msg: "Cluster test passed and all node results are true."
 
 
 ```
