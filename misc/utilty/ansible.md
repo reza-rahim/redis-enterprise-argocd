@@ -2,12 +2,12 @@
 - hosts: localhost
   gather_facts: false
   vars:
-    check_url: "https://example.com/api/status"
+    check_url: "https://example.com/api/status"  # <-- your endpoint
     poll_retries: 30
     poll_delay: 5
 
   tasks:
-    - name: Poll endpoint until every element has result=true
+    - name: Poll until cluster and all nodes are true
       ansible.builtin.uri:
         url: "{{ check_url }}"
         method: GET
@@ -16,34 +16,37 @@
         return_content: true
         status_code: 200
         timeout: 10
+        validate_certs: true
       register: resp
       until: >
         (
           resp.json is defined and
-          (resp.json | length) > 0 and
+          (resp.json.cluster_test_result | default(false) | bool) and
+          (resp.json.nodes is defined) and
+          ((resp.json.nodes | length) > 0) and
           (
-            (resp.json | selectattr('result','equalto', true) | list | length)
-            ==
-            (resp.json | length)
+            (resp.json.nodes | selectattr('result','equalto', false) | list | length) == 0
           )
         )
         or
         (
           resp.content is defined and
-          ((resp.content | from_json | length) > 0) and
+          (resp.content | length) > 0) and
           (
-            ((resp.content | from_json | selectattr('result','equalto', true) | list | length)
-             ==
-             (resp.content | from_json | length))
+            ((resp.content | from_json).cluster_test_result | default(false) | bool) and
+            (((resp.content | from_json).nodes | length) > 0) and
+            (((resp.content | from_json).nodes
+               | selectattr('result','equalto', false) | list | length) == 0)
           )
         )
       retries: "{{ poll_retries }}"
       delay: "{{ poll_delay }}"
       changed_when: false
 
-    - name: Continue when ready
+    - name: Proceed after success
       debug:
-        msg: "All results are true; proceeding..."
+        msg: "Cluster test passed and all node results are true."
+
 
 ```
 
