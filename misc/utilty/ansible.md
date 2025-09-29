@@ -1,3 +1,17 @@
+
+```
+- set_fact:
+    rerc_list: >-
+      {{
+        ocp_targets
+        | map(attribute='name')
+        | zip(ocp_targets | map(attribute='namespace'))
+        | map('join','-')
+        | map('regex_replace','^','rerc-')
+        | list
+      }}
+
+```
 ```
 - hosts: localhost
   gather_facts: no
