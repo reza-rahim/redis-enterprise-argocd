@@ -1,3 +1,10 @@
+```
+ids:
+{% for id in rerc_list %}
+  - {{ id }}
+{% endfor %}
+
+```
 
 ```
 - set_fact:
