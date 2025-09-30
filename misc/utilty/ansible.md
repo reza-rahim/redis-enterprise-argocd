@@ -1,4 +1,8 @@
 ```
+oc get pods -A --no-headers | awk '{split($2,a,"/"); if(a[1] != a[2]) print $0}'
+```
+
+```
 - name: Wait until cluster test results are all true
   hosts: localhost
   gather_facts: false
