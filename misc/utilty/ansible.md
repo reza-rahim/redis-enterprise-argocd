@@ -1,5 +1,25 @@
 ```
-oc get pods -A --no-headers | awk '{split($2,a,"/"); if(a[1] != a[2]) print $0}'
+
+- name: Wait until all pods have all containers READY (n/n)
+  ansible.builtin.shell: |
+    set -o pipefail
+    oc get pods -A --no-headers | awk '{
+      split($2,a,"/");              # a[1] = ready, a[2] = total
+      # flag as not-ready if: there are containers AND not all ready AND not a completed job
+      if (a[2] > 0 && a[1] != a[2] && $4 != "Completed" && $4 != "Succeeded") {
+        printf "%-20s %-55s %-8s %-12s\n", $1, $2, $3, $4; 
+        bad=1
+      }
+    } END { exit bad }'
+  args:
+    executable: /bin/bash
+  register: pods_check
+  changed_when: false
+  retries: 60        # try up to 10 minutes total
+  delay: 10
+  until: pods_check.rc == 0
+
+
 ```
 
 ```
